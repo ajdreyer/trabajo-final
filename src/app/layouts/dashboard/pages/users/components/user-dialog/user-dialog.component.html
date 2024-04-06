@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Crear Usuario</h2>
+
+<form [formGroup]="userForm">
+    <div mat-dialog-content>
+        <div class="row">
+            <div class="col-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="firstName" matInput/>
+                </mat-form-field>
+            </div>
+    
+            <div class="col-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Apellido</mat-label>
+                    <input formControlName="lastName" matInput/>
+                </mat-form-field>
+            </div>
+    
+            <div class="col-8">
+                <mat-form-field class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" matInput/>
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Rol</mat-label>
+                    <mat-select formControlName="role">
+                        <mat-option value="ADMIN">Admin</mat-option>
+                        <mat-option value="USER">User</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</form>
+{{userForm.value | json}}
+<div class="d-flex justify-content-end" mat-dialog-actions>
+    <button (click)="onSave()" mat-button>Guardar</button>
+    <button mat-dialog-close mat-button>Cancelar</button>
+</div>
