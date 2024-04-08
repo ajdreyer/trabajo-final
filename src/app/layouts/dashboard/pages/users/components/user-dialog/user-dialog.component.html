@@ -32,10 +32,18 @@
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div class="col-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Born Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="bornDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
         </div>
     </div>
 </form>
-{{userForm.value | json}}
 <div class="d-flex justify-content-end" mat-dialog-actions>
     <button (click)="onSave()" mat-button>Guardar</button>
     <button mat-dialog-close mat-button>Cancelar</button>

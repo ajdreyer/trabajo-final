@@ -1,30 +1,22 @@
-<div class="d-flex justify-content-end">
-    <button (click)="opentDialog()" mat-button color="primary" margin-botton="3px">Crear usuario</button>
+<div class="d-flex justify-content-end mb-3">
+    <button (click)="opentDialog()" mat-button color="primary">Crear usuario</button>
 </div>
 <table mat-table [dataSource]="users" class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> No. </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
-  
-    <!-- Name Column -->
+
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
       <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
     </ng-container>
-  
-    <!-- Weight Column -->
+    
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef> Apellido </th>
       <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
     </ng-container>
-  
-    <!-- Symbol Column -->
+    
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
@@ -34,15 +26,19 @@
       <th mat-header-cell *matHeaderCellDef> Rol </th>
       <td mat-cell *matCellDef="let element"> {{element.role}} </td>
     </ng-container>
+    
+    <ng-container matColumnDef="bornDate">
+      <th mat-header-cell *matHeaderCellDef> Born Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.bornDate | date}} </td>
+    </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="createdAt">
       <th mat-header-cell *matHeaderCellDef> Created At </th>
       <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>...</th>
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
         <button (click)="opentDialog(element)" mat-icon-button color="primary">
           <mat-icon>edit</mat-icon>

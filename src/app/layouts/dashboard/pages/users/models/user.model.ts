@@ -6,5 +6,6 @@ export interface IUser{
     lastName:string,
     email: string,
     createdAt:Date,
-    role: UserRole
+    role: UserRole,
+    bornDate: Date
 }

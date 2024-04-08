@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import { IUser } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +11,7 @@ import { UserDialogComponent } from './components/user-dialog/user-dialog.compon
 })
 
 export class UsersComponent {
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'role', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'role', 'bornDate', 'createdAt', 'actions'];
 
   users: IUser[] = [
     {
@@ -20,6 +21,7 @@ export class UsersComponent {
       email: "email@email.com",
       role: 'ADMIN',
       createdAt: new Date(),
+      bornDate: new Date('04-01-1991')
     },
     {
       id: 2,
@@ -28,6 +30,7 @@ export class UsersComponent {
       email: "email@email.com",
       role: 'USER',
       createdAt: new Date(),
+      bornDate: new Date('05-02-1950')
     },
     {
       id: 3,
@@ -36,6 +39,7 @@ export class UsersComponent {
       email: "email@email.com",
       role: 'USER',
       createdAt: new Date(),
+      bornDate: new Date('04-01-1980')
     },
     {
       id: 4,
@@ -44,6 +48,7 @@ export class UsersComponent {
       email: "email@email.com",
       role: 'USER',
       createdAt: new Date(),
+      bornDate: new Date('08-17-1980')
     }
   ]
 
@@ -60,11 +65,21 @@ export class UsersComponent {
           if(result){
             if(editingUser){
               this.users = this.users.map((m) => m.id === editingUser.id ? {...m, ...result} : m);
+
+              Swal.fire({
+                title: `El usuario ${editingUser.firstName} ${editingUser.lastName} se modificó de manera existosa.`,
+                icon: "success"
+              });
             }
             else{
               result.id = new Date().getTime();
               result.createdAt = new Date();
               this.users = [...this.users, result];
+
+               Swal.fire({
+                title: "Usuario creado de manera exitosa.",
+                icon: "success"
+              });
             }
           }
         },
@@ -72,9 +87,17 @@ export class UsersComponent {
   }
 
   onDeleteUser(id:number):void{
-    //sweet alert con confirmacion de eliminacion
-    this.users = this.users.filter((u) => u.id != id);
+    Swal.fire({
+      title: "¿Está usted seguro que desea eliminar el usuario?.",
+      text: "El usuario se eliminara de forma permanente.",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar."
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.users = this.users.filter((u) => u.id != id);
+      }
+    })
   }
-
-
 }
