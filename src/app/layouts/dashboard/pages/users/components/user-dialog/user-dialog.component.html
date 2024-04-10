@@ -1,30 +1,31 @@
-<h2 mat-dialog-title>Crear Usuario</h2>
+<h2 mat-dialog-title appResaltado>Crear Usuario</h2>
 
 <form [formGroup]="userForm">
     <div mat-dialog-content>
         <div class="row">
             <div class="col-6">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100 p-2">
                     <mat-label>Nombre</mat-label>
                     <input formControlName="firstName" matInput/>
+                    <mat-error>{{firstNameControl?.errors| formFieldValidationError}}</mat-error>
                 </mat-form-field>
             </div>
     
             <div class="col-6">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100 p-2">
                     <mat-label>Apellido</mat-label>
                     <input formControlName="lastName" matInput/>
                 </mat-form-field>
             </div>
     
             <div class="col-8">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100 p-2">
                     <mat-label>Email</mat-label>
                     <input formControlName="email" matInput/>
                 </mat-form-field>
             </div>
             <div class="col-4">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100 p-2">
                     <mat-label>Rol</mat-label>
                     <mat-select formControlName="role">
                         <mat-option value="ADMIN">Admin</mat-option>
@@ -33,7 +34,7 @@
                 </mat-form-field>
             </div>
             <div class="col-4">
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100 p-2">
                     <mat-label>Born Date</mat-label>
                     <input matInput [matDatepicker]="picker" formControlName="bornDate">
                     <mat-hint>MM/DD/YYYY</mat-hint>

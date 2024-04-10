@@ -9,9 +9,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FormFieldValidationErrorPipe } from './pipes/form-field-validation-error.pipe';
+import { ResaltadoDirective } from './directives/resaltado.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    FormFieldValidationErrorPipe,
+    ResaltadoDirective
+  ],
   imports: [
     CommonModule
   ],
@@ -24,7 +29,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     ReactiveFormsModule,
     MatSelectModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    FormFieldValidationErrorPipe,
+    ResaltadoDirective
   ]
 })
 export class SharedModule { }

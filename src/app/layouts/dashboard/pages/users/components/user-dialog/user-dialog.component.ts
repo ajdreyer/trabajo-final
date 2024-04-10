@@ -17,7 +17,7 @@ export class UserDialogComponent {
               private matDialogRef: MatDialogRef<UserDialogComponent>,
               @Inject(MAT_DIALOG_DATA) private editingUser?: IUser){
     this.userForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],//, Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){1,5}(?<!\s)$")]],
+      firstName: ['', [Validators.required, Validators.maxLength(6), Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){1,5}(?<!\s)$")]],
       lastName: ['', [Validators.required]],//, Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){1,5}(?<!\s)$")]],
       email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}')]],
       role:['USER', [Validators.required]],
@@ -27,6 +27,10 @@ export class UserDialogComponent {
     if(editingUser){
       this.userForm.patchValue(editingUser);
     }
+  }
+
+  get firstNameControl(){
+    return this.userForm.get('firstName');
   }
 
   onSave():void{
