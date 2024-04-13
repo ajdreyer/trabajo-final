@@ -10,12 +10,15 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormFieldValidationErrorPipe } from './pipes/form-field-validation-error.pipe';
-import { ResaltadoDirective } from './directives/resaltado.directive';
+import { FullNamePipe } from './pipes/full-name.pipe';
+import { Tamanio20TitulosDirective } from './directives/tamanio-20-titulos.directive';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
     FormFieldValidationErrorPipe,
-    ResaltadoDirective
+    FullNamePipe,
+    Tamanio20TitulosDirective
   ],
   imports: [
     CommonModule
@@ -31,7 +34,9 @@ import { ResaltadoDirective } from './directives/resaltado.directive';
     MatIconModule,
     MatDatepickerModule,
     FormFieldValidationErrorPipe,
-    ResaltadoDirective
+    FullNamePipe,
+    Tamanio20TitulosDirective,
+    MatListModule
   ]
 })
 export class SharedModule { }

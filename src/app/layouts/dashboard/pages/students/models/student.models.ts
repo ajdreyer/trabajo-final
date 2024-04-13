@@ -6,7 +6,7 @@ export interface IStudent{
     lastName:string,
     email: string,
     createdAt:Date,
-    IdNumber:number,
+    idNumber:number,
     bornDate: Date,
     schoolLevel:SchoolLevel,
     streetName:string,
