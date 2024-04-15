@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class StudentDialogComponent {
   studentForm: FormGroup;
+  buttonDisabled = false;
 
   constructor(private formBuilder:FormBuilder,
               private matDialogRef: MatDialogRef<StudentDialogComponent>,
@@ -35,6 +36,7 @@ export class StudentDialogComponent {
 
       if(editingStudent[1]){
         this.studentForm.disable();
+        this.buttonDisabled = true;
       }
     }
   }

@@ -14,6 +14,9 @@ import { ClassDialogComponent } from './components/class-dialog/class-dialog.com
   imports: [
     CommonModule,
     ClassesRoutingModule
+  ],
+  exports:[
+    ClassesComponent
   ]
 })
 export class ClassesModule { }

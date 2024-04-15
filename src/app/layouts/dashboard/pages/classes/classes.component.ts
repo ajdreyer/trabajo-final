@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-classes',
@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class ClassesComponent {
 
+  @Input()
+  visible = false;
+
+  @Output()
+  visibleChange = new EventEmitter();
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, input } from '@angular/core';
 import { StudentService } from './student.service';
 import { IStudent } from './models';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +16,12 @@ export class StudentsComponent implements OnInit{
   displayedColumns: string[] = ['id', 'fullName', 'email', 'createdAt', 'bornDate', 'actions'];
 
   students: IStudent[] =[];
+
+  @Input()
+  visible = false;
+
+  @Output()
+  visibleChange = new EventEmitter();
 
   constructor(private studentService: StudentService,
               private dialog: MatDialog
