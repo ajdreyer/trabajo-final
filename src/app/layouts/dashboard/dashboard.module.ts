@@ -14,6 +14,7 @@ import { Clase09RxjsModule } from './pages/clase-09-rxjs/clase-09-rxjs.module';
 import { SharedModule } from '../../shared/shared.module';
 import { ClassesModule } from './pages/classes/classes.module';
 import { CoursesModule } from './pages/courses/courses.module';
+import { Clase10RxjsModule } from './pages/clase10-rxjs/clase10-rxjs.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CoursesModule } from './pages/courses/courses.module';
     Clase09RxjsModule,
     SharedModule,
     ClassesModule,
-    CoursesModule
+    CoursesModule,
+    Clase10RxjsModule
   ],
   exports:[
     DashboardComponent,

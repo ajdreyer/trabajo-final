@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { IUser } from './pages/users/models';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,12 +11,28 @@ import { Component } from '@angular/core';
 export class DashboardComponent {
   showFiller = false;
 
+  mostrarComponente = true;
+
   showStudents = false;
   showClasses = false;
   showCourses = false;
 
   isMobile(): boolean {
     return window.innerWidth <= 280;
+  }
+
+  authUser$: Observable<IUser | null>;
+
+  constructor(private authService: AuthService){
+    this.authUser$ = this.authService.authUser$;
+  }
+
+  login(): void{
+    this.authService.login();
+  }
+
+  logout(): void{
+    this.authService.logout();
   }
 
   displayStudents():void{

@@ -11,12 +11,29 @@
   
     <div class="example-sidenav-content">
       <mat-toolbar color="primary">
-        <button (click)="drawer.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <div class="d-flex justify-content-between align-items-center w-100">
+         <div>
+          <button (click)="drawer.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
             <mat-icon>menu</mat-icon>
-         </button>
+          </button>
+         </div>
+         <div>
+          @if(authUser$ | async; as user){
+            {{user?.firstName}} {{user?.lastName}}
+          }          
+         </div>
+        </div>
       </mat-toolbar>
       <main style="padding: 1rem;">
-        <app-students></app-students>
+        <div>
+          <button (click)="login()" color="primary" mat-flat-button >Iniciar Sesion</button>
+
+          <button (click)="logout()" color="warn" mat-flat-button >Cerrar Sesion</button>
+        </div>
+
+        <button (click)="mostrarComponente = !mostrarComponente">alternar componente</button>
+        <app-clase10-rxjs *ngIf="mostrarComponente"></app-clase10-rxjs>
+        <!-- <app-students></app-students> -->
         <!-- <app-courses [(visible)] = "showCourses"></app-courses>
         <app-classes [(visible)] = "showClasses"></app-classes> -->
       </main>
