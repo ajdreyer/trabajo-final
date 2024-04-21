@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { IUser } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import Swal from 'sweetalert2';
+import { UsersService } from './users.service';
 
 @Component({
   selector: 'app-users',
@@ -10,49 +11,35 @@ import Swal from 'sweetalert2';
   styleUrl: './users.component.scss'
 })
 
-export class UsersComponent {
+export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'role', 'bornDate', 'createdAt', 'actions'];
 
-  users: IUser[] = [
-    {
-      id: 1,
-      firstName: "Alejandro",
-      lastName: "Dreyer",
-      email: "email@email.com",
-      role: 'ADMIN',
-      createdAt: new Date(),
-      bornDate: new Date('04-01-1991')
-    },
-    {
-      id: 2,
-      firstName: "Roberto",
-      lastName: "Perfumo",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('05-02-1950')
-    },
-    {
-      id: 3,
-      firstName: "Patricio",
-      lastName: "Toranzo",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('04-01-1980')
-    },
-    {
-      id: 4,
-      firstName: "Esteban",
-      lastName: "Fuertes",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('08-17-1980')
-    }
-  ]
+  users: IUser[] = [];
 
-  constructor( private dialog: MatDialog){}
+  loading = false;
+
+  constructor( private dialog: MatDialog, private userService: UsersService){
+    
+  }
+  ngOnInit(): void {
+    this.loading = true;
+
+    this.userService.getUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+      },
+      error: (err) => {
+        console.log('error:', err);
+        Swal.fire({
+          title: err,
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    })
+  }
 
   opentDialog(editingUser?: IUser):void{
     this.dialog

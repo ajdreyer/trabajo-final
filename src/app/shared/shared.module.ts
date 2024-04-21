@@ -13,6 +13,7 @@ import { FormFieldValidationErrorPipe } from './pipes/form-field-validation-erro
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { Tamanio20TitulosDirective } from './directives/tamanio-20-titulos.directive';
 import { MatListModule } from '@angular/material/list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatListModule } from '@angular/material/list';
     FormFieldValidationErrorPipe,
     FullNamePipe,
     Tamanio20TitulosDirective,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }
