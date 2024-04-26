@@ -22,9 +22,7 @@ let people:IPerson[] = [{
 })
 export class PeopleService {
 
-  constructor() { }
-
-  
+  constructor() { }  
 
   getPeople(): Observable<IPerson[]> {
     return of(people).pipe(delay(1500));

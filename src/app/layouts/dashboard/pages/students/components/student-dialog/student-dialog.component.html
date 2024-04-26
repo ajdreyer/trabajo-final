@@ -1,95 +1,37 @@
-<h2 mat-dialog-title appTamanio20Titulos>Crear Estudiante</h2>
+<div *ngIf="loading" class="d-flex justify-content-center align-items-center w-100">
+    <mat-spinner ></mat-spinner>
+</div>
+<ng-container *ngIf="!loading">
+    <h2 mat-dialog-title appTamanio20Titulos>Crear Estudiante</h2>
 
-<form [formGroup]="studentForm">
-    <div mat-dialog-content>
-        <div class="row">
-            <div class="col-6">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Nombre</mat-label>
-                    <input formControlName="firstName" matInput/>
-                    <mat-error>{{firstNameControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-    
-            <div class="col-6">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Apellido</mat-label>
-                    <input formControlName="lastName" matInput/>
-                    <mat-error>{{lastNameControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-    
-            <div class="col-8">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Email</mat-label>
-                    <input formControlName="email" matInput/>
-                    <mat-error>{{emailControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-4">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Born Date</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="bornDate">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-error>{{bornDateControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-8">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Nro. identificacion</mat-label>
-                    <input formControlName="idNumber" matInput/>
-                    <mat-error>{{idNumberControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-4">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Nivel escolar</mat-label>
-                    <mat-select formControlName="schoolLevel">
-                        <mat-option value="Primary">Primario</mat-option>
-                        <mat-option value="Secondary">Secundario</mat-option>
-                    </mat-select>
-                    <mat-error>{{schoolLevelControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-6">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Calle</mat-label>
-                    <input formControlName="streetName" matInput/>
-                    <mat-error>{{streetNameControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-2">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Número</mat-label>
-                    <input formControlName="streetNumber" matInput/>
-                    <mat-error>{{streetNumberControl?.errors| formFieldValidationError}}</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="col-2">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Piso</mat-label>
-                    <input formControlName="floor" matInput/>
-                </mat-form-field>
-            </div>
-
-            <div class="col-2">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Departamento</mat-label>
-                    <input formControlName="department" matInput/>
-                </mat-form-field>
+    <form [formGroup]="studentForm">
+        <div mat-dialog-content>
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-label>Persona</mat-label>
+                        <mat-select formControlName="People">
+                        <mat-option [value]="people" *ngFor="let person of people">
+                            {{ person.firstName}} {{person.lastName }}
+                        </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-label>Curso</mat-label>
+                        <mat-select formControlName="Course">
+                        <mat-option [value]="courses" *ngFor="let course of courses">
+                            {{ course.Name}}
+                        </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
+    </form>
+    <div class="d-flex justify-content-end" mat-dialog-actions>
+        <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
+        <button mat-dialog-close mat-button [disabled]="buttonDisabled">Cancelar</button>
     </div>
-</form>
-<div class="d-flex justify-content-end" mat-dialog-actions>
-    <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
-    <button mat-dialog-close mat-button [disabled]="buttonDisabled">Cancelar</button>
-</div>
+</ng-container>

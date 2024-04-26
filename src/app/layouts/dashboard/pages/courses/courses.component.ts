@@ -22,7 +22,11 @@ export class CoursesComponent implements OnInit {
   constructor(private courseService: CourseService){}
 
   ngOnInit(): void {
-    this.courses = this.courseService.getCourses();
+    this.courseService.getCourses().subscribe({
+      next: (courses) => {
+        this.courses = courses;
+      }
+    });
   }
 
 }

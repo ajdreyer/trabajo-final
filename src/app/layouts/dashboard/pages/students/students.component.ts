@@ -4,6 +4,9 @@ import { IStudent } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import Swal from 'sweetalert2';
+import { IPerson } from '../people/models';
+import { ICourse } from '../courses/models';
+import { PeopleService } from '../people/people.service';
 
 @Component({
   selector: 'app-students',
@@ -13,7 +16,7 @@ import Swal from 'sweetalert2';
 
 export class StudentsComponent implements OnInit{
   
-  displayedColumns: string[] = ['id', 'fullName', 'email', 'createdAt', 'bornDate', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'email', 'expedient', 'actions'];
 
   students:  IStudent[] =[];
 
@@ -62,7 +65,7 @@ export class StudentsComponent implements OnInit{
               });
 
               Swal.fire({
-                title: `El estudiante ${editingStudent.firstName} ${editingStudent.lastName} se modificó de manera existosa.`,
+                title: `El estudiante se modificó de manera existosa.`,
                 icon: "success"
               });
             }

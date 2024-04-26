@@ -4,17 +4,29 @@ import { Observable, delay, of } from 'rxjs';
 
 let students:IStudent[] = [{
   id: 1,
-  firstName: 'Alejandro',
-  lastName: 'Dreyer',
-  email: 'alejandro.dreyer91@gmail.com',
-  createdAt: new Date(),
-  bornDate: new Date('1991-01-04'),
-  idNumber: 28456123,
-  schoolLevel: 'Secondary',
-  streetName: 'Callao',
-  streetNumber: '973',
-  floor: 2,
-  department: 'B'
+  People: {
+    id: 1,
+    firstName: 'Alejandro',
+    lastName: 'Dreyer',
+    email: 'alejandro.dreyer91@gmail.com',
+    createdAt: new Date(),
+    bornDate: new Date('1991-01-04'),
+    idNumber: 28456123,
+    schoolLevel: 'Secondary',
+    streetName: 'Callao',
+    streetNumber: '973',
+    floor: 2,
+    department: 'B'
+  },
+  Expedient: 'ABC1258SS',
+  Course: {
+    Id: 1,
+      Name: 'Couse 1',
+      Class: {
+        Id: 1,
+        Name: 'Clase1'
+      }
+  }
 }];
 
 @Injectable({
@@ -23,9 +35,7 @@ let students:IStudent[] = [{
 export class StudentService {
 
   constructor() { }
-
   
-
   getStudents(): Observable<IStudent[]> {
     return of(students).pipe(delay(1500));
   };

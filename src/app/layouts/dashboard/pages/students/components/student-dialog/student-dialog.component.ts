@@ -1,9 +1,14 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IStudent } from '../../models';
+import { IStudent, IStudentForm } from '../../models';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import Swal from 'sweetalert2';
+import { IPerson } from '../../../people/models';
+import { ICourse } from '../../../courses/models';
+import { PeopleService } from '../../../people/people.service';
+import { CourseService } from '../../../courses/course.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-student-dialog',
@@ -11,25 +16,25 @@ import Swal from 'sweetalert2';
   styleUrl: './student-dialog.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class StudentDialogComponent {
-  studentForm: FormGroup;
-  buttonDisabled = false;
+export class StudentDialogComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder,
-              private matDialogRef: MatDialogRef<StudentDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean],){
-    this.studentForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}')]],
-      bornDate:['', Validators.required],
-      idNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      schoolLevel: ['', Validators.required],
-      streetName:['', Validators.required],
-      streetNumber: ['', Validators.required],
-      floor: [''],
-      department:['']
-    });
+  studentForm = new FormGroup<IStudentForm>({
+    Id: new FormControl(),
+    People: new FormControl(null),
+    Expedient: new FormControl(''),
+    Course: new FormControl(null)
+  });
+
+  buttonDisabled = false;
+  loading = false;
+
+  people: IPerson[] = [];
+  courses: ICourse[] = [];
+
+  constructor(private matDialogRef: MatDialogRef<StudentDialogComponent>,
+              private peopleService: PeopleService,
+              private couseService: CourseService,
+              @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean]){
 
     if(editingStudent){
       this.studentForm.patchValue(editingStudent[0]);
@@ -39,6 +44,24 @@ export class StudentDialogComponent {
         this.buttonDisabled = true;
       }
     }
+  }
+  ngOnInit(): void {
+    this.loading = true;
+    forkJoin(
+      [
+        this.peopleService.getPeople(),
+        this.couseService.getCourses()
+      ]
+    ).subscribe({
+      next:(value) => {
+        
+        this.people = value[0];
+        this.courses = value[1];
+      },
+      complete:() => {
+        this.loading = false;
+      }
+    });
   }
 
   onSave():void{

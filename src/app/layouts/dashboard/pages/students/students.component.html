@@ -14,27 +14,17 @@
 
     <ng-container matColumnDef="fullName">
       <th mat-header-cell *matHeaderCellDef> Nombre y apellido </th>
-      <td mat-cell *matCellDef="let element"> {{[element.firstName, element.lastName] | fullName}}</td>
+      <td mat-cell *matCellDef="let element"> {{[element.People.firstName, element.People.lastName] | fullName}}</td>
     </ng-container>
     
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.People.email}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef> Created At </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
-      </ng-container>
-
-    <ng-container matColumnDef="idNumber">
-      <th mat-header-cell *matHeaderCellDef> Nro. identificación </th>
-      <td mat-cell *matCellDef="let element"> {{element.idNumber}} </td>
-    </ng-container>
-    
-    <ng-container matColumnDef="bornDate">
-      <th mat-header-cell *matHeaderCellDef> Born Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.bornDate | date}} </td>
+    <ng-container matColumnDef="expedient">
+      <th mat-header-cell *matHeaderCellDef> Nro. legajo </th>
+      <td mat-cell *matCellDef="let element"> {{element.Expedient}} </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
