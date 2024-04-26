@@ -3,7 +3,11 @@
     <mat-drawer [opened]="!isMobile()" #drawer class="example-sidenav" [mode]="isMobile() ? 'over' : 'side'">
       <mat-nav-list>
         <a routerLink="home" mat-list-item>Inicio</a>
-        <a routerLink="users" mat-list-item>Usuarios</a>
+        <!-- <a routerLink="users" mat-list-item>Usuarios</a> -->
+        <a routerLink="students" mat-list-item>Estudiantes</a>
+        <a routerLink="classes" mat-list-item>Clases</a>
+        <a routerLink="courses" mat-list-item>Cursos</a>
+        <a routerLink="people" mat-list-item>Personas</a>
         <!-- <a (click)="logout()" mat-list-item>Cerrar sesion</a> -->
       </mat-nav-list>
     </mat-drawer>

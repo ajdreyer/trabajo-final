@@ -7,7 +7,7 @@ const routes: Routes = [
    /**
    * Path actual: /dashboard/users
    */
-   {
+  {
     path: '',
     component: UsersComponent,
   },

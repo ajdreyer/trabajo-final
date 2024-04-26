@@ -20,6 +20,26 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'home',
+  },
+  {
+    path: 'students',
+    loadChildren: () =>
+      import('./pages/students/students.module').then((m) => m.StudentsModule),
+  },
+  {
+    path: 'classes',
+    loadChildren: () =>
+      import('./pages/classes/classes.module').then((m) => m.ClassesModule),
+  },
+  {
+    path: 'courses',
+    loadChildren: () =>
+      import('./pages/courses/courses.module').then((m) => m.CoursesModule),
+  },  
+  {
+    path: 'people',
+    loadChildren: () =>
+      import('./pages/people/people.module').then((m) => m.PeopleModule),
   }
 ];
 

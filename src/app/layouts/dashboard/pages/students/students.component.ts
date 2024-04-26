@@ -15,7 +15,9 @@ export class StudentsComponent implements OnInit{
   
   displayedColumns: string[] = ['id', 'fullName', 'email', 'createdAt', 'bornDate', 'actions'];
 
-  students: IStudent[] =[];
+  students:  IStudent[] =[];
+
+  loading = false;
 
   @Input()
   visible = false;
@@ -28,7 +30,19 @@ export class StudentsComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.students = this.studentService.getStudents();
+    this.loadStudents();
+  }
+
+  loadStudents():void{
+    this.loading = true;
+    this.studentService.getStudents().subscribe({
+      next:(students) => {
+        this.students = students;
+      },
+      complete: () =>{
+        this.loading = false;
+      }
+    })
   }
 
   opentDialog(editingStudent?: IStudent, readingMode?:boolean):void{
@@ -41,7 +55,11 @@ export class StudentsComponent implements OnInit{
         next:(result) => {
           if(result){
             if(editingStudent){
-              this.students = [...this.studentService.editStudent(editingStudent)];
+              this.studentService.editStudent(editingStudent.id, editingStudent).subscribe({
+                next: (students) => {
+                  this.students = [...students];
+                }
+              });
 
               Swal.fire({
                 title: `El estudiante ${editingStudent.firstName} ${editingStudent.lastName} se modificó de manera existosa.`,
@@ -49,9 +67,18 @@ export class StudentsComponent implements OnInit{
               });
             }
             else{
-              result.id = this.studentService.getNextId();
+              this.studentService.getNextId().subscribe({
+                next: (nextId) => {
+                  result.id = nextId;
+                }
+              });
+
               result.createdAt = new Date();
-              this.students = [...this.studentService.addStudent(result)];
+              this.studentService.addStudent(result).subscribe({
+                next: (students) => {
+                  this.students = [...students];
+                }
+              });
 
                Swal.fire({
                 title: "estudiante creado de manera exitosa.",
@@ -65,15 +92,19 @@ export class StudentsComponent implements OnInit{
 
   onDeleteStudent(id:number):void{
     Swal.fire({
-      title: "¿Está usted seguro que desea eliminar el usuario?.",
-      text: "El usuario se eliminara de forma permanente.",
+      title: "¿Está usted seguro que desea eliminar el estudiante?.",
+      text: "El estudiante se eliminará de forma permanente.",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.students = [...this.studentService.deleteStudent(id)];
+        this.studentService.deleteStudent(id).subscribe({
+          next: (students) => {
+            this.students = [...students];
+          }
+        });
       }
     })
   }
