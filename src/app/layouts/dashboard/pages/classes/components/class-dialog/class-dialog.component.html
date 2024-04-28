@@ -1,1 +1,47 @@
-<p>class-dialog works!</p>
+<h2 mat-dialog-title appTamanio20Titulos>Crear Clase</h2>
+
+<form [formGroup]="classForm">
+    <div mat-dialog-content>
+        <div class="row">
+            <div class="col-6">
+                <mat-form-field class="w-100 p-2">
+                    <mat-label>Turno</mat-label>
+                    <mat-select formControlName="Turn">
+                        <mat-option value="Mañana">Mañana</mat-option>
+                        <mat-option value="Tarde">Tarde</mat-option>
+                        <mat-option value="Noche">Noche</mat-option>
+                    </mat-select>
+                    <mat-error>{{turnControl?.errors| formFieldValidationError}}</mat-error>
+                </mat-form-field>
+            </div>
+    
+            <div class="col-6">
+                <mat-form-field class="w-100 p-2">
+                    <mat-label>Materia</mat-label>
+                    <input formControlName="Subject" matInput/>
+                    <mat-error>{{subjectControl?.errors| formFieldValidationError}}</mat-error>
+                </mat-form-field>
+            </div>
+    
+            <div class="col-8">
+                <mat-form-field class="w-100 p-2">
+                    <mat-label>Hs. desde</mat-label>
+                    <input formControlName="HourFrom" matInput/>
+                    <mat-error>{{hourFromControl?.errors| formFieldValidationError}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-8">
+                <mat-form-field class="w-100 p-2">
+                    <mat-label>Hs. Hasta</mat-label>
+                    <input formControlName="HourTo" matInput/>
+                    <mat-error>{{hourToControl?.errors| formFieldValidationError}}</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="d-flex justify-content-end" mat-dialog-actions>
+    <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
+    <button mat-dialog-close mat-button>Cancelar</button>
+</div>

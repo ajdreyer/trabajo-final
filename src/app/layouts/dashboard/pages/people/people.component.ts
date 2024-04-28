@@ -53,7 +53,7 @@ export class PeopleComponent {
         next:(result) => {
           if(result){
             if(editingPerson){
-              this.peopleService.editPeople(editingPerson.id, editingPerson).subscribe({
+              this.peopleService.editPeople(editingPerson.id, result).subscribe({
                 next: (people) => {
                   this.people = [...people];
                 }

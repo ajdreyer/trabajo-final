@@ -4,7 +4,7 @@ import { IPerson } from "../../people/models";
 export type SchoolLevel = 'Primary' | 'Secondary'
 
 export interface IStudent{
-    id:number,
+    Id:number,
     People: IPerson,
     Expedient: string,
     Course: ICourse

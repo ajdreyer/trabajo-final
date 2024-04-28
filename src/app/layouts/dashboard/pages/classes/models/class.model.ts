@@ -1,4 +1,9 @@
+export type ITurn = 'Mañana' | 'Tarde' | 'Noche';
+
 export interface IClass{
     Id: number,
-    Name: string
+    Turn: ITurn,
+    Subject: string,
+    HourFrom:string,
+    HourTo: string
 }

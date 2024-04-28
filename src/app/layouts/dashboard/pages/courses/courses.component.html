@@ -1,27 +1,32 @@
 <div class="d-flex justify-content-end mb-3">
-    <button mat-button color="primary">Crear courso</button>
+    <button (click)="opentDialog()" mat-button color="primary">Crear curso</button>
 </div>
 <table mat-table [dataSource]="courses" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
     </ng-container>
     
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="class">
+      <th mat-header-cell *matHeaderCellDef> Clase </th>
+      <td mat-cell *matCellDef="let element"> {{[element.Class.Subject,element.Class.Turn,element.Class.HourFrom,element.Class.HourTo] | fullNameClass}}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
-        <button  mat-icon-button color="primary">
+        <button (click)="opentDialog(element, true)" mat-icon-button color="primary">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button color="primary">
+        <button (click)="opentDialog(element)" mat-icon-button color="primary">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn">
+        <button (click)="onDeleteCourse(element.Id)" mat-icon-button color="warn">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

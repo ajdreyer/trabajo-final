@@ -3,7 +3,7 @@ import { IStudent } from './models';
 import { Observable, delay, of } from 'rxjs';
 
 let students:IStudent[] = [{
-  id: 1,
+  Id: 1,
   People: {
     id: 1,
     firstName: 'Alejandro',
@@ -21,13 +21,18 @@ let students:IStudent[] = [{
   Expedient: 'ABC1258SS',
   Course: {
     Id: 1,
-      Name: 'Couse 1',
-      Class: {
-        Id: 1,
-        Name: 'Clase1'
-      }
+    Name: 'Couse 1',
+    Class: {
+      Id: 1,
+      Turn: 'Mañana',
+      Subject: 'Matemática',
+      HourFrom: '09:00',
+      HourTo: '12:30'
+    }
   }
 }];
+
+//let students:IStudent[] = [];
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +52,7 @@ export class StudentService {
   };
 
   deleteStudent(id:number){
-    return of(students.filter((el, i) => el.id !== id));
+    return of(students.filter((el, i) => el.Id !== id));
   }
 
   getNextId():Observable<number>{
@@ -55,6 +60,6 @@ export class StudentService {
   }
 
   editStudent(id: number, student: IStudent){
-    return of(students.map((st) => st.id === id ? {...st, ...student} : st))
+    return of(students.map((st) => st.Id === id ? {...st, ...student} : st))
   }
 }

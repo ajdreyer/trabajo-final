@@ -4,9 +4,6 @@ import { IStudent } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import Swal from 'sweetalert2';
-import { IPerson } from '../people/models';
-import { ICourse } from '../courses/models';
-import { PeopleService } from '../people/people.service';
 
 @Component({
   selector: 'app-students',
@@ -21,12 +18,6 @@ export class StudentsComponent implements OnInit{
   students:  IStudent[] =[];
 
   loading = false;
-
-  @Input()
-  visible = false;
-
-  @Output()
-  visibleChange = new EventEmitter();
 
   constructor(private studentService: StudentService,
               private dialog: MatDialog
@@ -58,7 +49,7 @@ export class StudentsComponent implements OnInit{
         next:(result) => {
           if(result){
             if(editingStudent){
-              this.studentService.editStudent(editingStudent.id, editingStudent).subscribe({
+              this.studentService.editStudent(editingStudent.Id, result).subscribe({
                 next: (students) => {
                   this.students = [...students];
                 }
@@ -72,11 +63,10 @@ export class StudentsComponent implements OnInit{
             else{
               this.studentService.getNextId().subscribe({
                 next: (nextId) => {
-                  result.id = nextId;
+                  result.Id = nextId;
                 }
               });
 
-              result.createdAt = new Date();
               this.studentService.addStudent(result).subscribe({
                 next: (students) => {
                   this.students = [...students];
@@ -84,7 +74,7 @@ export class StudentsComponent implements OnInit{
               });
 
                Swal.fire({
-                title: "estudiante creado de manera exitosa.",
+                title: "Estudiante creado de manera exitosa.",
                 icon: "success"
               });
             }

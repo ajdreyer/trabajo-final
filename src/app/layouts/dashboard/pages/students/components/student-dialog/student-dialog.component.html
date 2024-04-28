@@ -8,23 +8,29 @@
         <div mat-dialog-content>
             <div class="row">
                 <div class="col-6">
-                    <mat-form-field>
+                    <mat-form-field class="w-100 p-2">
                         <mat-label>Persona</mat-label>
-                        <mat-select formControlName="People">
-                        <mat-option [value]="people" *ngFor="let person of people">
-                            {{ person.firstName}} {{person.lastName }}
+                            <mat-select formControlName="People">
+                                <mat-option [value]="person" *ngFor="let person of people">
+                                    {{ person.firstName}} {{person.lastName }}
+                                </mat-option>
+                            </mat-select>   
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field class="w-100 p-2">
+                        <mat-label>Curso</mat-label>
+                        <mat-select formControlName="Course">
+                        <mat-option [value]="course" *ngFor="let course of courses">
+                            {{ course.Name}}
                         </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="col-6">
-                    <mat-form-field>
-                        <mat-label>Curso</mat-label>
-                        <mat-select formControlName="Course">
-                        <mat-option [value]="courses" *ngFor="let course of courses">
-                            {{ course.Name}}
-                        </mat-option>
-                        </mat-select>
+                    <mat-form-field class="w-100 p-2">
+                        <mat-label>Nro. legajo</mat-label>
+                        <input formControlName="Expedient" matInput/>
                     </mat-form-field>
                 </div>
             </div>
@@ -32,6 +38,6 @@
     </form>
     <div class="d-flex justify-content-end" mat-dialog-actions>
         <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
-        <button mat-dialog-close mat-button [disabled]="buttonDisabled">Cancelar</button>
+        <button mat-dialog-close mat-button>Cancelar</button>
     </div>
 </ng-container>
