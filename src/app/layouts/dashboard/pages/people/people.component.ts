@@ -17,12 +17,6 @@ export class PeopleComponent {
 
   loading = false;
 
-  @Input()
-  visible = false;
-
-  @Output()
-  visibleChange = new EventEmitter();
-
   constructor(private peopleService: PeopleService,
               private dialog: MatDialog
   ){}

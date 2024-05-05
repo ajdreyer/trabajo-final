@@ -16,7 +16,7 @@ export class UserDetailComponent {
 
   constructor(private activatedRoute: ActivatedRoute, private userService: UsersService){
     this.loading = true;
-    this.user$ = this.userService.getUserById(parseInt(this.activatedRoute.snapshot.params['id'])).pipe(
+    this.user$ = this.userService.getUserById(this.activatedRoute.snapshot.params['id']).pipe(
       finalize(() => {
         this.loading = false;
       })

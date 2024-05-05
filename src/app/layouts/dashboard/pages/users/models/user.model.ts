@@ -1,11 +1,16 @@
+import { IPerson } from "../../people/models";
+
 export type UserRole = 'ADMIN' | 'USER'
 
 export interface IUser{
     id:number,
-    firstName: string,
-    lastName:string,
-    email: string,
-    createdAt:Date,
-    role: UserRole,
-    bornDate: Date
+    person: IPerson,
+    role: IRol,
+    name: string,
+    password: string
+}
+
+export interface IRol{
+    id:number,
+    name: string
 }

@@ -1,8 +1,13 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IUser } from '../../models';
+import { IRol, IUser } from '../../models';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { RoleServie } from '../../../role/role.service';
+import { PeopleService } from '../../../people/people.service';
+import { IPerson } from '../../../people/models';
+import { forkJoin } from 'rxjs';
+import { IUserForm } from '../../models/userForm.model';
 
 @Component({
   selector: 'app-user-dialog',
@@ -10,27 +15,47 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   styleUrl: './user-dialog.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class UserDialogComponent {
-  userForm: FormGroup;
+export class UserDialogComponent implements OnInit {
+  userForm = new FormGroup<IUserForm>({
+    id: new FormControl(),
+    person: new FormControl(null, Validators.required),
+    rol: new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
+  });
 
-  constructor(private formBuilder:FormBuilder, 
-              private matDialogRef: MatDialogRef<UserDialogComponent>,
+  buttonDisabled = false;
+  loading = false;
+
+  people: IPerson[] = [];
+  role: IRol[] = [];
+
+  constructor(private matDialogRef: MatDialogRef<UserDialogComponent>,
+              private rolService: RoleServie,
+              private peopleService: PeopleService,
               @Inject(MAT_DIALOG_DATA) private editingUser?: IUser){
-    this.userForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.maxLength(6), Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){1,5}(?<!\s)$")]],
-      lastName: ['', [Validators.required]],//, Validators.pattern("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){1,5}(?<!\s)$")]],
-      email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}')]],
-      role:['USER', [Validators.required]],
-      bornDate:['', Validators.required]
-    });
-
     if(editingUser){
       this.userForm.patchValue(editingUser);
     }
   }
 
-  get firstNameControl(){
-    return this.userForm.get('firstName');
+  ngOnInit(): void {
+    this.loading = true;
+    forkJoin(
+      [
+        this.peopleService.getPeople(),
+        this.rolService.getRole()
+      ]
+    ).subscribe({
+      next:(value) => {
+        
+        this.people = value[0];
+        this.role = value[1];
+      },
+      complete:() => {
+        this.loading = false;
+      }
+    });
   }
 
   onSave():void{

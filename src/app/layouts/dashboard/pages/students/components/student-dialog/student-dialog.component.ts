@@ -77,36 +77,4 @@ export class StudentDialogComponent implements OnInit {
       this.matDialogRef.close(this.studentForm.value)
     }
   }
-
-  get firstNameControl(){
-    return this.studentForm.get('firstName');
-  }
-
-  get lastNameControl(){
-    return this.studentForm.get('lastName');
-  }
-
-  get emailControl(){
-    return this.studentForm.get('email');
-  }
-
-  get bornDateControl(){
-    return this.studentForm.get('bornDate');
-  }
-
-  get idNumberControl(){
-    return this.studentForm.get('idNumber');
-  }
-
-  get schoolLevelControl(){
-    return this.studentForm.get('schoolLevel');
-  }
-
-  get streetNameControl(){
-    return this.studentForm.get('streetName');
-  }
-
-  get streetNumberControl(){
-    return this.studentForm.get('streetNumber');
-  }
 }

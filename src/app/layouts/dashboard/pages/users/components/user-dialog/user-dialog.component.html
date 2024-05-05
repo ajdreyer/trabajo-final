@@ -5,41 +5,34 @@
         <div class="row">
             <div class="col-6">
                 <mat-form-field class="w-100 p-2">
-                    <mat-label>Nombre</mat-label>
-                    <input formControlName="firstName" matInput/>
-                    <mat-error>{{firstNameControl?.errors| formFieldValidationError}}</mat-error>
+                    <mat-label>Persona</mat-label>
+                        <mat-select formControlName="person">
+                            <mat-option [value]="person" *ngFor="let person of people">
+                                {{ person.firstName}} {{person.lastName }}
+                            </mat-option>
+                        </mat-select>   
                 </mat-form-field>
             </div>
-    
             <div class="col-6">
                 <mat-form-field class="w-100 p-2">
-                    <mat-label>Apellido</mat-label>
-                    <input formControlName="lastName" matInput/>
-                </mat-form-field>
-            </div>
-    
-            <div class="col-8">
-                <mat-form-field class="w-100 p-2">
-                    <mat-label>Email</mat-label>
-                    <input formControlName="email" matInput/>
-                </mat-form-field>
-            </div>
-            <div class="col-4">
-                <mat-form-field class="w-100 p-2">
                     <mat-label>Rol</mat-label>
-                    <mat-select formControlName="role">
-                        <mat-option value="ADMIN">Admin</mat-option>
-                        <mat-option value="USER">User</mat-option>
+                    <mat-select formControlName="rol">
+                    <mat-option [value]="rol" *ngFor="let rol of role">
+                        {{ rol.name}}
+                    </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <mat-form-field class="w-100 p-2">
-                    <mat-label>Born Date</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="bornDate">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-label>Nombre usuario</mat-label>
+                    <input formControlName="name" matInput/>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <mat-form-field class="w-100 p-2">
+                    <mat-label>Password</mat-label>
+                    <input formControlName="password" matInput/>
                 </mat-form-field>
             </div>
         </div>

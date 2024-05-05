@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 })
 
 export class UsersComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'role', 'bornDate', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'email', 'role', 'name', 'actions'];
 
   users: IUser[] = [];
 
@@ -51,17 +51,28 @@ export class UsersComponent implements OnInit {
         next:(result) => {
           if(result){
             if(editingUser){
-              this.users = this.users.map((m) => m.id === editingUser.id ? {...m, ...result} : m);
+              this.userService.updateUser(editingUser.id.toString(), result).subscribe({
+                next: () => {
+                  this.userService.getUsers().subscribe({
+                    next:(users) => {
+                      this.users = users;
+                    }
+                  });
+                }
+              });
 
               Swal.fire({
-                title: `El usuario ${editingUser.firstName} ${editingUser.lastName} se modificó de manera existosa.`,
+                title: `El usuario se modificó de manera existosa.`,
                 icon: "success"
               });
             }
             else{
-              result.id = new Date().getTime();
-              result.createdAt = new Date();
-              this.users = [...this.users, result];
+              
+              this.userService.createUser(result).subscribe({
+                next: (createdUser) => {
+                  this.users = [...this.users, createdUser];
+                }
+              });
 
                Swal.fire({
                 title: "Usuario creado de manera exitosa.",
@@ -76,7 +87,7 @@ export class UsersComponent implements OnInit {
   onDeleteUser(id:number):void{
     Swal.fire({
       title: "¿Está usted seguro que desea eliminar el usuario?.",
-      text: "El usuario se eliminara de forma permanente.",
+      text: "El usuario se eliminará de forma permanente.",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",

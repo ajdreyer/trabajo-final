@@ -1,54 +1,30 @@
 import { Injectable } from "@angular/core";
-import { IUser } from "./models";
-import { Observable, catchError, delay, first, of, throwError } from "rxjs";
-
-const USERS_DB: IUser[] = [
-    {
-      id: 1,
-      firstName: "Alejandro",
-      lastName: "Dreyer",
-      email: "email@email.com",
-      role: 'ADMIN',
-      createdAt: new Date(),
-      bornDate: new Date('04-01-1991')
-    },
-    {
-      id: 2,
-      firstName: "Roberto",
-      lastName: "Perfumo",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('05-02-1950')
-    },
-    {
-      id: 3,
-      firstName: "Patricio",
-      lastName: "Toranzo",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('04-01-1980')
-    },
-    {
-      id: 4,
-      firstName: "Esteban",
-      lastName: "Fuertes",
-      email: "email@email.com",
-      role: 'USER',
-      createdAt: new Date(),
-      bornDate: new Date('08-17-1980')
-    }
-  ];
+import { IUser, IUserPayload} from "./models";
+import { Observable, catchError, concatMap, delay, first, forkJoin, of, throwError } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 
 export class UsersService{
-    getUsers(): Observable<IUser[]>{
-        return of(USERS_DB).pipe(delay(1500));
-    }
 
-    getUserById(id: number): Observable<IUser | undefined>{
-        return of(USERS_DB.find((el) => el.id == id)).pipe(delay(1500));
-    }
+  constructor(private httpClient: HttpClient){
+    
+  }
+  
+  getUsers(): Observable<IUser[]>{
+    return this.httpClient.get<IUser[]>(`${environment.baseUrl}users`);
+  }
+
+  getUserById(id: string): Observable<IUser | undefined>{
+    return this.httpClient.get<IUser>(`${environment.baseUrl}users/${id}`);
+  }
+
+  createUser(user: IUserPayload): Observable<IUser>{
+    return this.httpClient.post<IUser>(`${environment.baseUrl}users`, user)
+  }
+
+  updateUser(id:string, user: IUserPayload): Observable<IUser>{
+    return this.httpClient.patch<IUser>(`${environment.baseUrl}users/${id}`, user);
+  }
 }

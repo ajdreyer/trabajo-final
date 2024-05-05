@@ -15,6 +15,7 @@ import { Tamanio20TitulosDirective } from './directives/tamanio-20-titulos.direc
 import { MatListModule } from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FullNameClassPipe } from './pipes/full-name-class.pipe';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FullNameClassPipe } from './pipes/full-name-class.pipe';
     FullNameClassPipe,
     Tamanio20TitulosDirective,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule
   ]
 })
 export class SharedModule { }
