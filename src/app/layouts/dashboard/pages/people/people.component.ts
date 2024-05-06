@@ -47,9 +47,13 @@ export class PeopleComponent {
         next:(result) => {
           if(result){
             if(editingPerson){
-              this.peopleService.editPeople(editingPerson.id, result).subscribe({
-                next: (people) => {
-                  this.people = [...people];
+              this.peopleService.updatePeople(editingPerson.id.toString(), result).subscribe({
+                next: () => {
+                  this.peopleService.getPeople().subscribe({
+                    next:(people) => {
+                      this.people = people;
+                    }
+                  });
                 }
               });
 
@@ -59,16 +63,10 @@ export class PeopleComponent {
               });
             }
             else{
-              this.peopleService.getNextId().subscribe({
-                next: (nextId) => {
-                  result.id = nextId;
-                }
-              });
-
               result.createdAt = new Date();
               this.peopleService.addPeople(result).subscribe({
-                next: (people) => {
-                  this.people = [...people];
+                next: (createdPeople) => {
+                  this.people = [...this.people, createdPeople];
                 }
               });
 
@@ -92,10 +90,13 @@ export class PeopleComponent {
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.peopleService.deletePeople(id).subscribe({
-          next: (people) => {
-            this.people = [...people];
-          }
+        this.peopleService.deletePeople(id.toString()).subscribe({
+          next: () => 
+            this.peopleService.getPeople().subscribe({
+              next:(people) => {
+                this.people = people;
+              }
+            })
         });
       }
     })

@@ -41,6 +41,34 @@
       "streetNumber": "973",
       "floor": "2",
       "department": "B"
+    },
+    {
+      "id": "1d6f",
+      "firstName": "Juan Paco",
+      "lastName": "Perez",
+      "email": "jp@gmail.com",
+      "bornDate": "1988-05-15T03:00:00.000Z",
+      "idNumber": "29852456",
+      "schoolLevel": "Secondary",
+      "streetName": "Guemez",
+      "streetNumber": "1236",
+      "floor": "2",
+      "department": "B",
+      "createdAt": "2024-05-06T21:07:47.029Z"
+    },
+    {
+      "id": "25ed",
+      "firstName": "Juan Paco Pedro",
+      "lastName": "De la Mar",
+      "email": "jppdlamar@gmail.com",
+      "bornDate": "1950-01-01T03:00:00.000Z",
+      "idNumber": "10852741",
+      "schoolLevel": "Primary",
+      "streetName": "Mendoza",
+      "streetNumber": "1165",
+      "floor": "",
+      "department": "",
+      "createdAt": "2024-05-06T21:10:08.423Z"
     }
   ],
   "role": [

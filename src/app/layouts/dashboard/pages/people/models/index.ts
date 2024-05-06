@@ -1,1 +1,2 @@
-export * from './person.models';
+export * from './person.model';
+export * from './personPayload.model';

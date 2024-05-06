@@ -1,48 +1,35 @@
 import { Injectable } from '@angular/core';
-import { IPerson } from './models';
-import { Observable, delay, of } from 'rxjs';
-
-let people:IPerson[] = [{
-  id: 1,
-  firstName: 'Alejandro',
-  lastName: 'Dreyer',
-  email: 'alejandro.dreyer91@gmail.com',
-  createdAt: new Date(),
-  bornDate: new Date('1991-01-04'),
-  idNumber: 28456123,
-  schoolLevel: 'Secondary',
-  streetName: 'Callao',
-  streetNumber: '973',
-  floor: 2,
-  department: 'B'
-}];
+import { IPerson, IPersonPayload } from './models';
+import { Observable, count, delay, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PeopleService {
 
-  constructor() { }  
+  constructor(private httpClient: HttpClient){
+    
+  }
 
   getPeople(): Observable<IPerson[]> {
-    return of(people).pipe(delay(1500));
+    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}people`);
   };
 
-  addPeople(student: IPerson){
-    people.push(student);
-
-    return of(people);
+  addPeople(person: IPersonPayload): Observable<IPerson>{
+    return this.httpClient.post<IPerson>(`${environment.baseUrl}people`, person)
   };
 
-  deletePeople(id:number){
-    return of(people.filter((el, i) => el.id !== id));
+  deletePeople(id:string){
+    return this.httpClient.delete<IPerson>(`${environment.baseUrl}people/${id}`);
   }
 
   getNextId():Observable<number>{
-    return of(people.length + 1); 
+    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}people`).pipe(count());
   }
 
-  editPeople(id: number, person: IPerson){
-    return of(people.map((p) => p.id === id ? {...p, ...person} : p))
+  updatePeople(id:string, person: IPersonPayload): Observable<IPerson>{
+    return this.httpClient.patch<IPerson>(`${environment.baseUrl}people/${id}`, person);
   }
 }
