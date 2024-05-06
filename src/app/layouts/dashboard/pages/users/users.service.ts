@@ -27,4 +27,8 @@ export class UsersService{
   updateUser(id:string, user: IUserPayload): Observable<IUser>{
     return this.httpClient.patch<IUser>(`${environment.baseUrl}users/${id}`, user);
   }
+
+  deleteUser(id:string){
+    return this.httpClient.delete<IUser>(`${environment.baseUrl}users/${id}`);
+  }
 }

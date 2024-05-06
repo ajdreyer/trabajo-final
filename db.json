@@ -22,29 +22,6 @@
       },
       "name": "adreyer",
       "password": "ale123"
-    },
-    {
-      "id": "2",
-      "person": {
-        "id": 1,
-        "firstName": "Alejandro",
-        "lastName": "Dreyer",
-        "email": "alejandro.dreyer91@gmail.com",
-        "createdAt": "2024-05-05T17:52:18.592Z",
-        "bornDate": "1991-01-04T00:00:00.000Z",
-        "idNumber": 28456123,
-        "schoolLevel": "Secondary",
-        "streetName": "Callao",
-        "streetNumber": "973",
-        "floor": 2,
-        "department": "B"
-      },
-      "rol": {
-        "id": "1",
-        "name": "user"
-      },
-      "name": "ajd1991",
-      "password": "qwerty"
     }
   ],
   "students": [],

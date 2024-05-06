@@ -94,7 +94,14 @@ export class UsersComponent implements OnInit {
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.users = this.users.filter((u) => u.id != id);
+        this.userService.deleteUser(id.toString()).subscribe({
+          next: () => 
+            this.userService.getUsers().subscribe({
+              next:(users) => {
+                this.users = users;
+              }
+            })
+        });
       }
     })
   }
