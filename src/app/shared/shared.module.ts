@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FullNameClassPipe } from './pipes/full-name-class.pipe';
 import { MatCardModule } from '@angular/material/card';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatCardModule } from '@angular/material/card';
     Tamanio20TitulosDirective,
     MatListModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule
   ]
 })
 export class SharedModule { }

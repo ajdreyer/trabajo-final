@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import Swal from 'sweetalert2';
 import { UsersService } from './users.service';
-
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -19,8 +18,8 @@ export class UsersComponent implements OnInit {
   loading = false;
 
   constructor( private dialog: MatDialog, private userService: UsersService){
-    
   }
+  
   ngOnInit(): void {
     this.loading = true;
 

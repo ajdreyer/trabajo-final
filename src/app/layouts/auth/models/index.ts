@@ -1,5 +1,4 @@
-export interface LoginData {
-    name: string | null;
-    password: string | null;
-  }
-  
+export interface LoginRequest {
+  email:string,
+  password:string
+}

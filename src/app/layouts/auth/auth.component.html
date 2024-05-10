@@ -9,8 +9,8 @@
                 <form [formGroup]="loginForm" (ngSubmit)="login()">
                   <div>
                     <mat-form-field class="w-100">
-                      <mat-label>Nombre usuario</mat-label>
-                      <input formControlName="name" matInput />
+                      <mat-label>Email</mat-label>
+                      <input formControlName="email" matInput />
                     </mat-form-field>
                   </div>
                   <div>
@@ -19,6 +19,7 @@
                       <input formControlName="password" matInput />
                     </mat-form-field>
                   </div>
+                  <p class="text-danger">{{loginError}}</p>
                   <button type="submit" color="primary" mat-flat-button>
                     Iniciar sesion
                   </button>

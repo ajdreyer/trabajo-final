@@ -4,12 +4,8 @@ import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  console.log('authguard');
-
   const router = inject(Router);
   const authService = inject(AuthService);
-
-  const isAuth = authService.verifyToken();
-
-  return isAuth || router.createUrlTree(['auth']);
+  
+  return authService.currentUserLoginOn || router.createUrlTree(['auth']);
 };
