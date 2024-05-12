@@ -49,11 +49,4 @@ export class AuthComponent {
       alert("Error al ingresar los datos.");
     }
   }
-  // login() {
-  //   if (this.loginForm.invalid) {
-  //     this.loginForm.markAllAsTouched();
-  //   } else {
-  //     this.authService.login(this.loginForm.getRawValue());
-  //   }
-  // }
 }
