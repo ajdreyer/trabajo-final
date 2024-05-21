@@ -1,65 +1,29 @@
 import { Injectable } from '@angular/core';
-import { IStudent } from './models';
-import { Observable, delay, of } from 'rxjs';
-
-let students:IStudent[] = [{
-  Id: 1,
-  People: {
-    id: 1,
-    firstName: 'Alejandro',
-    lastName: 'Dreyer',
-    email: 'alejandro.dreyer91@gmail.com',
-    createdAt: new Date(),
-    bornDate: new Date('1991-01-04'),
-    idNumber: 28456123,
-    schoolLevel: 'Secondary',
-    streetName: 'Callao',
-    streetNumber: '973',
-    floor: 2,
-    department: 'B'
-  },
-  Expedient: 'ABC1258SS',
-  Course: {
-    Id: 1,
-    Name: 'Couse 1',
-    Class: {
-      Id: 1,
-      Turn: 'Mañana',
-      Subject: 'Matemática',
-      HourFrom: '09:00',
-      HourTo: '12:30'
-    }
-  }
-}];
-
-//let students:IStudent[] = [];
+import { IStudent, IStudentPayload } from './models';
+import { Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
   
   getStudents(): Observable<IStudent[]> {
-    return of(students).pipe(delay(1500));
+    return this.httpClient.get<IStudent[]>(`${environment.baseUrl}students?_embed=persona&_embed=course`);
   };
 
-  addStudent(student: IStudent){
-    students.push(student);
-
-    return of(students);
+  createStudent(student: IStudentPayload){
+    return this.httpClient.post<IStudent>(`${environment.baseUrl}students`, student)
   };
 
-  deleteStudent(id:number){
-    return of(students.filter((el, i) => el.Id !== id));
+  deleteStudent(id:string){
+    return this.httpClient.delete<IStudent>(`${environment.baseUrl}students/${id}`);
   }
 
-  getNextId():Observable<number>{
-    return of(students.length + 1); 
-  }
-
-  editStudent(id: number, student: IStudent){
-    return of(students.map((st) => st.Id === id ? {...st, ...student} : st))
+  updatePeople(id:string, student: IStudentPayload): Observable<IStudent>{
+    return this.httpClient.patch<IStudent>(`${environment.baseUrl}students/${id}`, student);
   }
 }

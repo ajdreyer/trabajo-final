@@ -14,7 +14,7 @@ export class PeopleService {
   }
 
   getPeople(): Observable<IPerson[]> {
-    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}people`);
+    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}personas`);
   };
 
   addPeople(person: IPersonPayload): Observable<IPerson>{

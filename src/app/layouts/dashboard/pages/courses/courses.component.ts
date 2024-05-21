@@ -38,7 +38,7 @@ export class CoursesComponent implements OnInit {
         next:(result) => {
           if(result){
             if(editingCourse){
-              this.courseService.editCourses(editingCourse.Id, result).subscribe({
+              this.courseService.editCourses(editingCourse.id, result).subscribe({
                 next: (courses) => {
                   this.courses = [...courses];
                 }
@@ -72,7 +72,7 @@ export class CoursesComponent implements OnInit {
       });
   }
 
-  onDeleteCourse(id:number):void{
+  onDeleteCourse(id:string):void{
     Swal.fire({
       title: "¿Está usted seguro que desea eliminar el curso?.",
       text: "El curso se eliminará de forma permanente.",

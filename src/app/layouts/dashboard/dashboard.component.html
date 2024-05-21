@@ -8,6 +8,7 @@
         <a routerLink="classes" mat-list-item>Clases</a>
         <a routerLink="courses" mat-list-item>Cursos</a>
         <a routerLink="people" mat-list-item>Personas</a>
+        <a routerLink="counter" mat-list-item>Contador</a>
         <a *ngIf="(authUser$ | async)?.role?.name === 'admin'" routerLink="users" mat-list-item>Usuarios</a>
         <a (click)="logout()" mat-list-item>Cerrar sesion</a>
       </mat-nav-list>

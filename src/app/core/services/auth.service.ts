@@ -21,25 +21,27 @@ export class AuthService
     constructor(private httpClient: HttpClient) {}
     
     login(credentials:LoginRequest): Observable<IUser[]> {
-      return this.httpClient.get<IUser[]>(`${environment.baseUrl}users?person.email=${credentials.email}&password=${credentials.password}`).pipe(
+      return this.httpClient.get<IUser[]>(`${environment.baseUrl}users?_embed=persona&_embed=role&persona.email=${credentials.email}&password=${credentials.password}`).pipe(
         tap((user: IUser[]) => {
           if(user[0]){
             let loggedUser: IUser = {
               id: user[0].id,
-              person: {
-                id: user[0].person.id,
-                firstName: user[0].person.firstName,
-                lastName: user[0].person.lastName,
-                email: user[0].person.email,
-                createdAt: user[0].person.createdAt,
-                bornDate: user[0].person.bornDate,
-                idNumber: user[0].person.idNumber,
-                schoolLevel: user[0].person.schoolLevel,
-                streetName: user[0].person.streetName,
-                streetNumber: user[0].person.streetNumber,
-                floor: user[0].person.floor,
-                department: user[0].person.department
+              personaId: user[0].personaId,
+              persona: {
+                id: user[0].persona.id,
+                firstName: user[0].persona.firstName,
+                lastName: user[0].persona.lastName,
+                email: user[0].persona.email,
+                createdAt: user[0].persona.createdAt,
+                bornDate: user[0].persona.bornDate,
+                idNumber: user[0].persona.idNumber,
+                schoolLevel: user[0].persona.schoolLevel,
+                streetName: user[0].persona.streetName,
+                streetNumber: user[0].persona.streetNumber,
+                floor: user[0].persona.floor,
+                department: user[0].persona.department
               },
+              roleId: user[0].roleId,
               role: {
                 id: user[0].role.id,
                 name: user[0].role.name

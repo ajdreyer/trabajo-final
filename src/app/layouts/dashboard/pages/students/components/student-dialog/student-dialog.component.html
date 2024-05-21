@@ -1,43 +1,40 @@
-<div *ngIf="loading" class="d-flex justify-content-center align-items-center w-100">
-    <mat-spinner ></mat-spinner>
-</div>
-<ng-container *ngIf="!loading">
-    <h2 mat-dialog-title appTamanio20Titulos>Crear Estudiante</h2>
-
-    <form [formGroup]="studentForm">
-        <div mat-dialog-content>
-            <div class="row">
-                <div class="col-6">
-                    <mat-form-field class="w-100 p-2">
-                        <mat-label>Persona</mat-label>
-                            <mat-select formControlName="People">
-                                <mat-option [value]="person" *ngFor="let person of people">
-                                    {{ person.firstName}} {{person.lastName }}
-                                </mat-option>
-                            </mat-select>   
-                    </mat-form-field>
-                </div>
-                <div class="col-6">
-                    <mat-form-field class="w-100 p-2">
-                        <mat-label>Curso</mat-label>
-                        <mat-select formControlName="Course">
-                        <mat-option [value]="course" *ngFor="let course of courses">
-                            {{ course.Name}}
-                        </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-6">
-                    <mat-form-field class="w-100 p-2">
-                        <mat-label>Nro. legajo</mat-label>
-                        <input formControlName="Expedient" matInput/>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-    </form>
-    <div class="d-flex justify-content-end" mat-dialog-actions>
-        <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
-        <button mat-dialog-close mat-button>Cancelar</button>
+@if (loadingStudentModal$ | async) {
+    <div class="d-flex justify-content-center align-items-center w-100">
+        <mat-spinner ></mat-spinner>
     </div>
-</ng-container>
+}@else{
+    @if (error$ | async ){
+        <h3>Ocurrió un error al cargar el modal de estudiantes.</h3>
+    }@else {
+        <ng-container>
+            <h2 mat-dialog-title appTamanio20Titulos>Crear Estudiante</h2>
+        
+            <form [formGroup]="studentForm">
+                <div mat-dialog-content>
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field class="w-100 p-2">
+                                <mat-label>Persona</mat-label>
+                                    <mat-select formControlName="personaId">
+                                        <mat-option [value]="person.id" *ngFor="let person of (personas$ | async)">
+                                            {{ person.firstName}} {{person.lastName }}
+                                        </mat-option>
+                                    </mat-select>   
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field class="w-100 p-2">
+                                <mat-label>Nro. legajo</mat-label>
+                                <input formControlName="expedient" matInput/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="d-flex justify-content-end" mat-dialog-actions>
+                <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
+                <button mat-dialog-close mat-button>Cancelar</button>
+            </div>
+        </ng-container>
+    }
+}

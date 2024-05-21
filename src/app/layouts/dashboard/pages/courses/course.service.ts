@@ -4,8 +4,8 @@ import { Observable, of, delay } from 'rxjs';
 
 let courses: ICourse[] = [
   {
-    Id: 1,
-    Name: 'Couse 1',
+    id: "1",
+    name: 'Couse 1',
     Class: {
       Id: 1,
       Turn: 'Mañana',
@@ -33,15 +33,15 @@ export class CourseService {
     return of(courses);
   };
 
-  deleteCourses(id:number){
-    return of(courses.filter((el, i) => el.Id !== id));
+  deleteCourses(id:string){
+    return of(courses.filter((el, i) => el.id !== id));
   }
 
   getNextId():Observable<number>{
     return of(courses.length + 1); 
   }
 
-  editCourses(id: number, course: ICourse){
-    return of(courses.map((p) => p.Id === id ? {...p, ...course} : p))
+  editCourses(id: string, course: ICourse){
+    return of(courses.map((p) => p.id === id ? {...p, ...course} : p))
   }
 }

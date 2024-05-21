@@ -1,9 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { StudentService } from './student.service';
 import { IStudent } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import Swal from 'sweetalert2';
+import { Store } from '@ngrx/store';
+import { selectLoadingStudents, selectStudentError, selectStudentsList } from './store/student.selectors';
+import { StudentActions } from './store/student.actions';
+import { Observable, map} from 'rxjs';
 
 @Component({
   selector: 'app-students',
@@ -15,28 +19,28 @@ export class StudentsComponent implements OnInit{
   
   displayedColumns: string[] = ['id', 'fullName', 'email', 'expedient', 'actions'];
 
-  students:  IStudent[] =[];
+  students$:  Observable<IStudent[]>;
 
-  loading = false;
+  loadingStudents$: Observable<boolean>;
+
+  error$: Observable<unknown>;
 
   constructor(private studentService: StudentService,
-              private dialog: MatDialog
-  ){}
+              private dialog: MatDialog,
+              private store: Store){
+                this.loadingStudents$ = this.store.select(selectLoadingStudents);
+                this.error$ = this.store.select(selectStudentError).pipe(map((err) => err as Error));
+                this.students$ = this.store.select(selectStudentsList);
+              }
 
   ngOnInit(): void {
     this.loadStudents();
   }
 
   loadStudents():void{
-    this.loading = true;
-    this.studentService.getStudents().subscribe({
-      next:(students) => {
-        this.students = students;
-      },
-      complete: () =>{
-        this.loading = false;
-      }
-    })
+    this.store.dispatch(StudentActions.loadStudents());
+
+    this.store.select(selectStudentsList);
   }
 
   opentDialog(editingStudent?: IStudent, readingMode?:boolean):void{
@@ -49,11 +53,7 @@ export class StudentsComponent implements OnInit{
         next:(result) => {
           if(result){
             if(editingStudent){
-              this.studentService.editStudent(editingStudent.Id, result).subscribe({
-                next: (students) => {
-                  this.students = [...students];
-                }
-              });
+              this.store.dispatch(StudentActions.updateStudent({ id: editingStudent.id, payload: result}))
 
               Swal.fire({
                 title: `El estudiante se modificó de manera existosa.`,
@@ -61,29 +61,21 @@ export class StudentsComponent implements OnInit{
               });
             }
             else{
-              this.studentService.getNextId().subscribe({
-                next: (nextId) => {
-                  result.Id = nextId;
-                }
-              });
-
-              this.studentService.addStudent(result).subscribe({
-                next: (students) => {
-                  this.students = [...students];
-                }
-              });
+              this.store.dispatch(StudentActions.createStudent({payload: result}))
 
                Swal.fire({
                 title: "Estudiante creado de manera exitosa.",
                 icon: "success"
               });
             }
+
+            this.loadStudents();
           }
         },
       });
   }
 
-  onDeleteStudent(id:number):void{
+  onDeleteStudent(id:string):void{
     Swal.fire({
       title: "¿Está usted seguro que desea eliminar el estudiante?.",
       text: "El estudiante se eliminará de forma permanente.",
@@ -93,11 +85,9 @@ export class StudentsComponent implements OnInit{
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.studentService.deleteStudent(id).subscribe({
-          next: (students) => {
-            this.students = [...students];
-          }
-        });
+        this.store.dispatch(StudentActions.deleteStudentById({ id: id }));
+
+        this.loadStudents();
       }
     })
   }

@@ -4,7 +4,9 @@ export type UserRole = 'ADMIN' | 'USER'
 
 export interface IUser{
     id:number,
-    person: IPerson,
+    personaId:string
+    persona: IPerson,
+    roleId: string,
     role: IRol,
     name: string,
     password: string

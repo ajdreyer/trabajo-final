@@ -8,7 +8,10 @@ import { IPerson } from '../../../people/models';
 import { ICourse } from '../../../courses/models';
 import { PeopleService } from '../../../people/people.service';
 import { CourseService } from '../../../courses/course.service';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { StudentActions } from '../../store/student.actions';
+import { selectLoadingStudentModal, selectLoadingStudents, selectPersonasList, selectStudentError } from '../../store/student.selectors';
 
 @Component({
   selector: 'app-student-dialog',
@@ -19,22 +22,24 @@ import { forkJoin } from 'rxjs';
 export class StudentDialogComponent implements OnInit {
 
   studentForm = new FormGroup<IStudentForm>({
-    Id: new FormControl(),
-    People: new FormControl(null),
-    Expedient: new FormControl(''),
-    Course: new FormControl(null)
+    personaId: new FormControl(''),
+    expedient: new FormControl('')
   });
 
   buttonDisabled = false;
-  loading = false;
+  loadingStudentModal$: Observable<boolean>;
 
-  people: IPerson[] = [];
-  courses: ICourse[] = [];
+  personas$:  Observable<IPerson[]>;
+
+  error$: Observable<unknown>;
 
   constructor(private matDialogRef: MatDialogRef<StudentDialogComponent>,
-              private peopleService: PeopleService,
-              private couseService: CourseService,
+              private store: Store,
               @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean]){
+
+    this.personas$ = this.store.select(selectPersonasList);
+    this.loadingStudentModal$ = this.store.select(selectLoadingStudentModal);
+    this.error$ = this.store.select(selectStudentError).pipe(map((err) => err as Error));
 
     if(editingStudent){
       this.studentForm.patchValue(editingStudent[0]);
@@ -46,22 +51,9 @@ export class StudentDialogComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.loading = true;
-    forkJoin(
-      [
-        this.peopleService.getPeople(),
-        this.couseService.getCourses()
-      ]
-    ).subscribe({
-      next:(value) => {
-        
-        this.people = value[0];
-        this.courses = value[1];
-      },
-      complete:() => {
-        this.loading = false;
-      }
-    });
+    this.store.dispatch(StudentActions.loadPersonas());
+
+    this.store.select(selectPersonasList);
   }
 
   onSave():void{
