@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { RegistrationEffects } from './store/registration.effects';
 import { StoreModule } from '@ngrx/store';
 import { registrationFeature } from './store/registration.reducer';
+import { SharedModule } from '../../../../shared/shared.module';
 
 
 @NgModule({
@@ -18,8 +19,12 @@ import { registrationFeature } from './store/registration.reducer';
   imports: [
     CommonModule,
     RegistrationsRoutingModule,
+    SharedModule,
     StoreModule.forFeature(registrationFeature),
     EffectsModule.forFeature([RegistrationEffects])
+  ],
+  exports:[
+    RegistrationsComponent
   ]
 })
 export class RegistrationsModule { }

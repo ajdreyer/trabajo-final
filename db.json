@@ -57,7 +57,17 @@
       "expedient": "qwerty"
     }
   ],
-  "registrations": [],
+  "registrations": [
+    {
+      "id": "c6a0",
+      "turn": "Mañana",
+      "subject": "ingles",
+      "hourFrom": "16:00",
+      "hourTo": "19:00",
+      "courseId": "1",
+      "studentId": "1"
+    }
+  ],
   "courses": [
     {
       "id": "1",

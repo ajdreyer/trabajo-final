@@ -6,13 +6,7 @@ let courses: ICourse[] = [
   {
     id: "1",
     name: 'Couse 1',
-    Class: {
-      Id: 1,
-      Turn: 'Mañana',
-      Subject: 'Matemática',
-      HourFrom: '09:00',
-      HourTo: '12:30'
-    }
+    Class: ''
   }
 ];
 

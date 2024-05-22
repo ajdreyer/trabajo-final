@@ -25,8 +25,7 @@ export class StudentsComponent implements OnInit{
 
   error$: Observable<unknown>;
 
-  constructor(private studentService: StudentService,
-              private dialog: MatDialog,
+  constructor(private dialog: MatDialog,
               private store: Store){
                 this.loadingStudents$ = this.store.select(selectLoadingStudents);
                 this.error$ = this.store.select(selectStudentError).pipe(map((err) => err as Error));

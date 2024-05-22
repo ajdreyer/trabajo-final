@@ -1,10 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { IClass } from '../../../classes/models';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ClassService } from '../../../classes/class.service';
 import { IStudentForm, IStudent } from '../../../students/models';
 import { CourseService } from '../../course.service';
 import { ICourse, ICourseForm } from '../../models';
@@ -24,10 +22,7 @@ export class CourseDialogComponent {
   buttonDisabled = false;
   loading = false;
 
-  classes: IClass[] = [];
-
   constructor(private matDialogRef: MatDialogRef<CourseDialogComponent>,
-              private classesService: ClassService,
               @Inject(MAT_DIALOG_DATA) private editingCourset?: [ICourse, boolean]){
 
     if(editingCourset){
@@ -40,15 +35,15 @@ export class CourseDialogComponent {
     }
   }
   ngOnInit(): void {
-    this.loading = true;
-    this.classesService.getClasses().subscribe({
-      next:(value) => {
-        this.classes = value;
-      },
-      complete:() => {
-        this.loading = false;
-      }
-    });
+    // this.loading = true;
+    // this.classesService.getClasses().subscribe({
+    //   next:(value) => {
+    //     this.classes = value;
+    //   },
+    //   complete:() => {
+    //     this.loading = false;
+    //   }
+    // });
   }
 
   onSave():void{
