@@ -1,41 +1,29 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICourse } from './models';
 import { Observable, of, delay } from 'rxjs';
-
-let courses: ICourse[] = [
-  {
-    id: "1",
-    name: 'Couse 1',
-    Class: ''
-  }
-];
+import { environment } from '../../../../../environments/environment';
+import { ICourse, ICoursePayload } from './models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
 
-  constructor() { }  
-
+  constructor(private httpClient: HttpClient) { }
+  
   getCourses(): Observable<ICourse[]> {
-    return of(courses).pipe(delay(1500));
+    return this.httpClient.get<ICourse[]>(`${environment.baseUrl}courses`);
   };
 
-  addCourses(course: ICourse){
-    courses.push(course);
-
-    return of(courses);
+  createCourse(student: ICoursePayload){
+    return this.httpClient.post<ICourse>(`${environment.baseUrl}courses`, student)
   };
 
-  deleteCourses(id:string){
-    return of(courses.filter((el, i) => el.id !== id));
+  deleteCourse(id:string){
+    return this.httpClient.delete<ICourse>(`${environment.baseUrl}courses/${id}`);
   }
 
-  getNextId():Observable<number>{
-    return of(courses.length + 1); 
-  }
-
-  editCourses(id: string, course: ICourse){
-    return of(courses.map((p) => p.id === id ? {...p, ...course} : p))
+  updateCourse(id:string, student: ICoursePayload): Observable<ICourse>{
+    return this.httpClient.patch<ICourse>(`${environment.baseUrl}courses/${id}`, student);
   }
 }

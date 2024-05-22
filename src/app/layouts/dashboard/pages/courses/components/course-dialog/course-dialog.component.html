@@ -7,20 +7,10 @@
     <form [formGroup]="courseForm">
         <div mat-dialog-content>
             <div class="row">
-                <!-- <div class="col-6">
-                    <mat-form-field class="w-100 p-2">
-                        <mat-label>Clase</mat-label>
-                            <mat-select formControlName="Class">
-                                <mat-option [value]="class" *ngFor="let class of classes">
-                                    {{ class.Turn}} {{class.Subject }} {{class.HourFrom }} - {{class.HourTo }}
-                                </mat-option>
-                            </mat-select>   
-                    </mat-form-field>
-                </div> -->
                 <div class="col-6">
                     <mat-form-field class="w-100 p-2">
                         <mat-label>Nombre</mat-label>
-                        <input formControlName="Name" matInput/>
+                        <input formControlName="name" matInput/>
                     </mat-form-field>
                 </div>
             </div>

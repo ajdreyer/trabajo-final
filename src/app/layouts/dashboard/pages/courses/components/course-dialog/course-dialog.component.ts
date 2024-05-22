@@ -1,10 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
-import { IStudentForm, IStudent } from '../../../students/models';
-import { CourseService } from '../../course.service';
 import { ICourse, ICourseForm } from '../../models';
 
 @Component({
@@ -14,36 +11,23 @@ import { ICourse, ICourseForm } from '../../models';
 })
 export class CourseDialogComponent {
   courseForm = new FormGroup<ICourseForm>({
-    Id: new FormControl(),
-    Class: new FormControl(null),
-    Name: new FormControl('')
+    name: new FormControl('')
   });
 
   buttonDisabled = false;
   loading = false;
 
   constructor(private matDialogRef: MatDialogRef<CourseDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) private editingCourset?: [ICourse, boolean]){
+              @Inject(MAT_DIALOG_DATA) private editingCourse?: [ICourse, boolean]){
 
-    if(editingCourset){
-      this.courseForm.patchValue(editingCourset[0]);
+    if(editingCourse){
+      this.courseForm.patchValue(editingCourse[0]);
 
-      if(editingCourset[1]){
+      if(editingCourse[1]){
         this.courseForm.disable();
         this.buttonDisabled = true;
       }
     }
-  }
-  ngOnInit(): void {
-    // this.loading = true;
-    // this.classesService.getClasses().subscribe({
-    //   next:(value) => {
-    //     this.classes = value;
-    //   },
-    //   complete:() => {
-    //     this.loading = false;
-    //   }
-    // });
   }
 
   onSave():void{
@@ -61,10 +45,6 @@ export class CourseDialogComponent {
   }
 
   get nameControl(){
-    return this.courseForm.get('Name');
-  }
-
-  get classControl(){
-    return this.courseForm.get('Class');
+    return this.courseForm.get('name');
   }
 }

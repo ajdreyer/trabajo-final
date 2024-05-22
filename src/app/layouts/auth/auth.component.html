@@ -19,7 +19,7 @@
                       <input formControlName="password" matInput />
                     </mat-form-field>
                   </div>
-                  <p class="text-danger">{{loginError}}</p>
+                  <p class="text-danger">{{(loginError$ | async)}}</p>
                   <button type="submit" color="primary" mat-flat-button>
                     Iniciar sesion
                   </button>

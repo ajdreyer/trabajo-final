@@ -3,6 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { LoginRequest } from './models';
+import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs';
+import { selectAuthError } from './store/auth.selectors';
+import { AuthActions } from './store/auth.actions';
 
 @Component({
   selector: 'app-auth',
@@ -12,37 +16,25 @@ import { LoginRequest } from './models';
 export class AuthComponent {
   loginForm: FormGroup;
 
-  loginError:string="";
+  loginError$:Observable<unknown>;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private store: Store) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required]],
       password: ['', Validators.required],
     });
+
+    this.loginError$ = this.store.select(selectAuthError).pipe(map((err) => err as Error));
   }
 
   login(){
     if(this.loginForm.valid){
-      this.loginError="";
-      this.authService.login(this.loginForm.value as LoginRequest).subscribe({
-        next: (userData) => {
-          console.log(userData);
-        },
-        error: (errorData) => {
-          console.error(errorData);
-          this.loginError=errorData;
-        },
-        complete: () => {
-          console.info("Login completo");
-          this.router.navigate(['dashboard', 'home']);
-          this.loginForm.reset();
-        }
-      })
+      this.store.dispatch(AuthActions.loginAuths({ payload: this.loginForm.value}))
 
+      this.router.navigate(['dashboard', 'home']);
+      this.loginForm.reset();
     }
     else{
       this.loginForm.markAllAsTouched();

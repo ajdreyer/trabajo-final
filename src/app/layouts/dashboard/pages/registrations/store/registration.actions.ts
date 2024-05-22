@@ -21,7 +21,7 @@ export const RegistrationActions = createActionGroup({
 
     'Delete Registrations By Id': props<{ id: string }>(),
     'Delete Registrations By Id Success': props<{ data: IRegistration }>(),
-    'Delete Registrations By Id Failure': props<{ error: HttpErrorResponse }>(),
+    'Delete Registrations By Id Failure': props<{ error: unknown }>(),
 
     'Load Courses': emptyProps(),
     'Load Courses Success': props<{ data: ICourse[] }>(),

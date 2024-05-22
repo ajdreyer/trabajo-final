@@ -4,6 +4,10 @@ import { ICourse } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseDialogComponent } from './components/course-dialog/course-dialog.component';
 import Swal from 'sweetalert2';
+import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs';
+import { selectCourseError, selectCoursesList, selectLoadingCourses } from './store/course.selectors';
+import { CourseActions } from './store/course.actions';
 
 @Component({
   selector: 'app-courses',
@@ -12,20 +16,30 @@ import Swal from 'sweetalert2';
 })
 export class CoursesComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'class', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'actions'];
 
-  courses: ICourse[] = [];
+  courses$:  Observable<ICourse[]>;
+
+  loadingcourses$: Observable<boolean>;
+
+  error$: Observable<unknown>;
 
   constructor(private courseService: CourseService,
-              private dialog: MatDialog
-  ){}
+              private dialog: MatDialog,
+              private store: Store){
+      this.loadingcourses$ = this.store.select(selectLoadingCourses);
+      this.error$ = this.store.select(selectCourseError).pipe(map((err) => err as Error));
+      this.courses$ = this.store.select(selectCoursesList);
+              }
 
   ngOnInit(): void {
-    this.courseService.getCourses().subscribe({
-      next: (courses) => {
-        this.courses = courses;
-      }
-    });
+    this.loadCourses();
+  }
+
+  loadCourses(){
+    this.store.dispatch(CourseActions.loadCourses());
+
+    this.store.select(selectCoursesList);
   }
 
   opentDialog(editingCourse?: ICourse, readingMode?:boolean):void{
@@ -38,11 +52,7 @@ export class CoursesComponent implements OnInit {
         next:(result) => {
           if(result){
             if(editingCourse){
-              this.courseService.editCourses(editingCourse.id, result).subscribe({
-                next: (courses) => {
-                  this.courses = [...courses];
-                }
-              });
+              this.store.dispatch(CourseActions.updateCourses({ id: editingCourse.id, payload: result}))
 
               Swal.fire({
                 title: `El curso se modificó de manera existosa.`,
@@ -50,23 +60,15 @@ export class CoursesComponent implements OnInit {
               });
             }
             else{
-              this.courseService.getNextId().subscribe({
-                next: (nextId) => {
-                  result.Id = nextId;
-                }
-              });
-
-              this.courseService.addCourses(result).subscribe({
-                next: (courses) => {
-                  this.courses = [...courses];
-                }
-              });
+              this.store.dispatch(CourseActions.createCourses({payload: result}))
 
                Swal.fire({
                 title: "Curso creado de manera exitosa.",
                 icon: "success"
               });
             }
+
+            this.loadCourses();
           }
         },
       });
@@ -82,11 +84,9 @@ export class CoursesComponent implements OnInit {
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.courseService.deleteCourses(id).subscribe({
-          next: (courses) => {
-            this.courses = [...courses];
-          }
-        });
+        this.store.dispatch(CourseActions.deleteCoursesById({ id: id }));
+  
+        this.loadCourses();
       }
     })
   }
