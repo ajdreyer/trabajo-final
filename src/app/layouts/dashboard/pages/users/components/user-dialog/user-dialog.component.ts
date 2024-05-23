@@ -34,18 +34,28 @@ export class UserDialogComponent implements OnInit {
   
   role$: Observable<IRol[]>;
 
+  buttonDisabled = false;
+
   constructor(private matDialogRef: MatDialogRef<UserDialogComponent>,
               private rolService: RoleServie,
               private peopleService: PeopleService,
               private store: Store,
-              @Inject(MAT_DIALOG_DATA) private editingUser?: IUser){
+              @Inject(MAT_DIALOG_DATA) private editingUser?: [IUser, boolean]){
     this.personas$ = this.store.select(selectPersonasList);
     this.role$ = this.store.select(selectRolesList);
     this.loadingUserModal$ = this.store.select(selectLoadingUsersModal);
     this.error$ = this.store.select(selectUsersError).pipe(map((err) => err as Error));
 
     if(editingUser){
-      this.userForm.patchValue(editingUser);
+      if(editingUser[0] !== undefined){
+        this.userForm.patchValue(editingUser[0]);
+
+        if(editingUser[1]){
+          this.userForm.disable();
+          this.buttonDisabled = true;
+        }
+      }
+      
     }
   }
 

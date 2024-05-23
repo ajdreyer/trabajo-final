@@ -39,7 +39,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let element">
-            <button [routerLink]="element.id" mat-icon-button color="primary">
+            <button (click)="opentDialog(element, true)" mat-icon-button color="primary">
               <mat-icon>visibility</mat-icon>
             </button>
             @if (authUser$ | async; as user) {

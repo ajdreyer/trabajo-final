@@ -47,7 +47,7 @@
     </div>
 </form>
 <div class="d-flex justify-content-end" mat-dialog-actions>
-    <button (click)="onSave()" mat-button>Guardar</button>
+    <button (click)="onSave()" mat-button [disabled]="buttonDisabled">Guardar</button>
     <button mat-dialog-close mat-button>Cancelar</button>
 </div>
     }

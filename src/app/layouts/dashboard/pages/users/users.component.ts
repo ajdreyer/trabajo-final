@@ -45,10 +45,10 @@ export class UsersComponent implements OnInit {
     this.store.select(selectUsersList);
   }
 
-  opentDialog(editingUser?: IUser):void{
+  opentDialog(editingUser?: IUser, readingMode?:boolean):void{
     this.dialog
       .open(UserDialogComponent, {
-        data: editingUser
+        data: [editingUser, readingMode]
       })
       .afterClosed()
       .subscribe({
