@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IStudent, IStudentForm } from '../../models';
@@ -11,10 +11,10 @@ import { CourseService } from '../../../courses/course.service';
 import { Observable, forkJoin, map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StudentActions } from '../../store/student.actions';
-import { selectLoadingStudentModal, selectLoadingStudents, selectPersonasList, selectStudentError } from '../../store/student.selectors';
+import { selectLoadingStudentModal, selectLoadingStudents, selectPersonasList, selectRegistrationsByStudentList, selectStudentError } from '../../store/student.selectors';
 import { IRegistration } from '../../../registrations/models';
-import { selectRegistrationsList } from '../../../registrations/store/registration.selectors';
 import { RegistrationActions } from '../../../registrations/store/registration.actions';
+import { RegistrationService } from '../../../registrations/registration.service';
 
 @Component({
   selector: 'app-student-dialog',
@@ -22,7 +22,7 @@ import { RegistrationActions } from '../../../registrations/store/registration.a
   styleUrl: './student-dialog.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class StudentDialogComponent implements OnInit {
+export class StudentDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedRegistrationColumns: string[] = ['id', 'turn', 'subject', 'course', 'actions'];
 
   studentForm = new FormGroup<IStudentForm>({
@@ -32,7 +32,7 @@ export class StudentDialogComponent implements OnInit {
 
   buttonDisabled = false;
   loadingStudentModal$: Observable<boolean>;
-  registrations$: Observable<IRegistration[]>
+  registrationsByStudentId$: Observable<IRegistration[]>
 
   personas$:  Observable<IPerson[]>;
 
@@ -40,18 +40,23 @@ export class StudentDialogComponent implements OnInit {
 
   loadGridRegistrations = false;
 
+  studentId = '0';
+
   constructor(private matDialogRef: MatDialogRef<StudentDialogComponent>,
               private store: Store,
+              private registrationService: RegistrationService,
               @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean]){
 
     this.personas$ = this.store.select(selectPersonasList);
-    this.registrations$ = this.store.select(selectRegistrationsList);
+    this.registrationsByStudentId$ = this.store.select(selectRegistrationsByStudentList);
     this.loadingStudentModal$ = this.store.select(selectLoadingStudentModal);
     this.error$ = this.store.select(selectStudentError).pipe(map((err) => err as Error));
 
     if(editingStudent){
       if(editingStudent[0] !== undefined){
         this.studentForm.patchValue(editingStudent[0]);
+
+        this.studentId = editingStudent[0].id;
 
         if(editingStudent[1]){
           this.studentForm.disable();
@@ -60,6 +65,15 @@ export class StudentDialogComponent implements OnInit {
       }
     }
   }
+  ngOnDestroy(): void {
+    this.loadGridRegistrations = false; 
+  }
+  ngAfterViewInit(): void {
+    if(this.studentId !== '0'){
+      this.loadRegistrations(this.studentId);
+      this.loadGridRegistrations = true;
+    }    
+  }
   ngOnInit(): void {
     this.store.dispatch(StudentActions.loadPersonas());
 
@@ -67,9 +81,9 @@ export class StudentDialogComponent implements OnInit {
   }
 
   loadRegistrations(studentId: string):void{
-    this.store.dispatch(RegistrationActions.loadRegistrationsByStudentId({studentId: studentId}));
+    this.store.dispatch(StudentActions.loadRegistrationsByStudentId({studentId: studentId}));
 
-    this.store.select(selectRegistrationsList);
+    this.store.select(selectRegistrationsByStudentList);
   }
 
   onSave():void{

@@ -5,6 +5,7 @@ import { state } from '@angular/animations';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { IPerson } from '../../people/models';
 import { ICourse } from '../../courses/models';
+import { IRegistration } from '../../registrations/models';
 
 export const studentFeatureKey = 'student';
 
@@ -13,7 +14,8 @@ export interface State {
   students: IStudent[],
   error: unknown,
   loadingStudentModal:boolean,
-  personas: IPerson[]
+  personas: IPerson[],
+  registrationsByStudentId: IRegistration[],
 }
 
 export const initialState: State = {
@@ -21,7 +23,8 @@ export const initialState: State = {
   students: [],
   error: null,
   loadingStudentModal: false,
-  personas: []
+  personas: [],
+  registrationsByStudentId: []
 };
 
 export const reducer = createReducer(
@@ -121,6 +124,27 @@ export const reducer = createReducer(
       error: action.error,
       loadingStudentModal: false
     }
+  }),
+  on(StudentActions.loadRegistrationsByStudentId, (state) => {
+    return {
+      ...state,
+      loadingRegistrations: true
+    };
+  }),
+
+  on(StudentActions.loadRegistrationsByStudentIdSuccess, (state, action) => {
+    return {
+      ...state,
+      loadingRegistrations: false,
+      registrationsByStudentId: action.data,
+    };
+  }),
+  on(StudentActions.loadRegistrationsByStudentIdFailure, (state, action) => {
+    return {
+      ...state,
+      loadingRegistrations: false,
+      error: action.error,
+    };
   })
 )
 

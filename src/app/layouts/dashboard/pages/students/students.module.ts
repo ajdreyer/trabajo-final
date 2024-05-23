@@ -22,9 +22,8 @@ import { RegistrationEffects } from '../registrations/store/registration.effects
     CommonModule,
     StudentsRoutingModule,
     SharedModule,
-    StoreModule.forFeature(registrationFeature),
     StoreModule.forFeature(studentFeature),
-    EffectsModule.forFeature([StudentEffects, RegistrationEffects])
+    EffectsModule.forFeature([StudentEffects])
   ],
   exports:[
     StudentsComponent

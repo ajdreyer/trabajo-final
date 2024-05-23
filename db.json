@@ -69,15 +69,38 @@
       "id": "3d5b",
       "personaId": "2",
       "expedient": "qwerty"
+    },
+    {
+      "id": "725a",
+      "personaId": "7a33",
+      "expedient": "qwerty"
     }
   ],
   "registrations": [
     {
-      "id": "49ee",
+      "id": "eb66",
       "turn": "Mañana",
-      "subject": "Ingles",
+      "subject": "ingles",
       "hourFrom": "08:00",
-      "hourTo": "12:00",
+      "hourTo": "9:30",
+      "courseId": "1",
+      "studentId": "1"
+    },
+    {
+      "id": "4141",
+      "turn": "Mañana",
+      "subject": "Matemática",
+      "hourFrom": "9.45",
+      "hourTo": "12.00",
+      "courseId": "1",
+      "studentId": "1"
+    },
+    {
+      "id": "d874",
+      "turn": "Tarde",
+      "subject": "Literatura",
+      "hourFrom": "13.30",
+      "hourTo": "16.30",
       "courseId": "1",
       "studentId": "1"
     }

@@ -3,6 +3,7 @@ import { IStudent, IStudentPayload } from '../models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IPerson } from '../../people/models';
 import { ICourse } from '../../courses/models';
+import { IRegistration } from '../../registrations/models';
 
 export const StudentActions = createActionGroup({
   source: 'Student',
@@ -26,5 +27,9 @@ export const StudentActions = createActionGroup({
     'Load Personas': emptyProps(),
     'Load Personas Success': props<{ data: IPerson[] }>(),
     'Load Personas Failure': props<{ error: unknown }>(),
+
+    'Load RegistrationsByStudentId': props<{ studentId: string }>(),
+    'Load RegistrationsByStudentId Success': props<{ data: IRegistration[] }>(),
+    'Load RegistrationsByStudentId Failure': props<{ error: unknown }>()
   }
 });

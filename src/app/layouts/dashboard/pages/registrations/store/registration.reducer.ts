@@ -8,7 +8,7 @@ export const registrationFeatureKey = 'registration';
 
 export interface State {
   loadingRegistrations: boolean,
-  registrations: IRegistration[],
+  registrations: IRegistration[],  
   error: unknown,
   loadingRegistrationModal: boolean,
   courses: ICourse[],
@@ -141,27 +141,6 @@ export const reducer = createReducer(
       error: action.error,
       loadingRegistrationModal: false
     }
-  }),
-  on(RegistrationActions.loadRegistrationsByStudentId, (state) => {
-    return {
-      ...state,
-      loadingRegistrations: true,
-    };
-  }),
-
-  on(RegistrationActions.loadRegistrationsByStudentIdSuccess, (state, action) => {
-    return {
-      ...state,
-      loadingRegistrations: false,
-      registrations: action.data,
-    };
-  }),
-  on(RegistrationActions.loadRegistrationsByStudentIdFailure, (state, action) => {
-    return {
-      ...state,
-      loadingRegistrations: false,
-      error: action.error,
-    };
   })
 );
 

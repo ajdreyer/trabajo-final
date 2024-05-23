@@ -16,7 +16,7 @@ import { environment } from '../../../../../environments/environment';
     }
 
     getRegistrationsByStudentId(studentId: string): Observable<IRegistration[]>{
-        return this.httpClient.get<IRegistration[]>(`${environment.baseUrl}registrations?_embed=course&_embed=student&student.id=1`)
+        return this.httpClient.get<IRegistration[]>(`${environment.baseUrl}registrations?_embed=course&_embed=student&student.id=${studentId}`)
     }
 
     createRegistration(registration: IRegistrationPayload){

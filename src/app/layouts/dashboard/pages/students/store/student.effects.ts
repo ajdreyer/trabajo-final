@@ -7,6 +7,7 @@ import { StudentService } from '../student.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PeopleService } from '../../people/people.service';
+import { RegistrationService } from '../../registrations/registration.service';
 
 
 @Injectable()
@@ -101,8 +102,23 @@ export class StudentEffects {
     );
   });
 
+  loadRegistrationsByStudentId$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(StudentActions.loadRegistrationsByStudentId),
+      concatMap((action) =>
+        this.registrationService.getRegistrationsByStudentId(action.studentId).pipe(
+          map((data) => StudentActions.loadRegistrationsByStudentIdSuccess({ data })),
+          catchError((error) =>
+            of(StudentActions.loadRegistrationsByStudentIdFailure({ error }))
+          )
+        )
+      )
+    );
+  });
+
   constructor(private actions$: Actions, 
               private studentService: StudentService,
-              private peopleService: PeopleService
+              private peopleService: PeopleService,
+              private registrationService: RegistrationService
   ) {}
 }
