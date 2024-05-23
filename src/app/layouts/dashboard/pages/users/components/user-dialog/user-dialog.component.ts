@@ -6,8 +6,11 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { RoleServie } from '../../../role/role.service';
 import { PeopleService } from '../../../people/people.service';
 import { IPerson } from '../../../people/models';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
 import { IUserForm } from '../../models/userForm.model';
+import { Store } from '@ngrx/store';
+import { selectLoadingUsersModal, selectPersonasList, selectRolesList, selectUsersError } from '../../store/user.selectors';
+import { UserActions } from '../../store/user.actions';
 
 @Component({
   selector: 'app-user-dialog',
@@ -17,45 +20,47 @@ import { IUserForm } from '../../models/userForm.model';
 })
 export class UserDialogComponent implements OnInit {
   userForm = new FormGroup<IUserForm>({
-    id: new FormControl(),
-    person: new FormControl(null, Validators.required),
-    rol: new FormControl(null, Validators.required),
+    personaId: new FormControl('', Validators.required),
+    roleId: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   });
 
-  buttonDisabled = false;
-  loading = false;
+  loadingUserModal$: Observable<boolean>;
 
-  people: IPerson[] = [];
-  role: IRol[] = [];
+  personas$:  Observable<IPerson[]>;
+
+  error$: Observable<unknown>;
+  
+  role$: Observable<IRol[]>;
 
   constructor(private matDialogRef: MatDialogRef<UserDialogComponent>,
               private rolService: RoleServie,
               private peopleService: PeopleService,
+              private store: Store,
               @Inject(MAT_DIALOG_DATA) private editingUser?: IUser){
+    this.personas$ = this.store.select(selectPersonasList);
+    this.role$ = this.store.select(selectRolesList);
+    this.loadingUserModal$ = this.store.select(selectLoadingUsersModal);
+    this.error$ = this.store.select(selectUsersError).pipe(map((err) => err as Error));
+
     if(editingUser){
       this.userForm.patchValue(editingUser);
     }
   }
 
   ngOnInit(): void {
-    this.loading = true;
-    forkJoin(
-      [
-        this.peopleService.getPeople(),
-        this.rolService.getRole()
-      ]
-    ).subscribe({
-      next:(value) => {
-        
-        this.people = value[0];
-        this.role = value[1];
-      },
-      complete:() => {
-        this.loading = false;
-      }
-    });
+   this.loadFormData();
+  }
+
+  loadFormData(): void{
+    this.store.dispatch(UserActions.loadPersonas());
+
+    this.store.select(selectPersonasList);
+
+    this.store.dispatch(UserActions.loadRoles());
+
+    this.store.select(selectRolesList);
   }
 
   onSave():void{

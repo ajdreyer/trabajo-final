@@ -7,6 +7,9 @@ import { selectLoadingRegistrations, selectRegistrationError, selectRegistration
 import { RegistrationActions } from './store/registration.actions';
 import { RegistrationDialogComponent } from './components/registration-dialog/registration-dialog.component';
 import Swal from 'sweetalert2';
+import { IUser } from '../users/models';
+import { AuthActions } from '../../../auth/store/auth.actions';
+import { selectAuthUser } from '../../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-registrations',
@@ -22,11 +25,14 @@ export class RegistrationsComponent implements OnInit {
 
   error$: Observable<unknown>;
 
+  authUser$: Observable<IUser[] | null>
+
   constructor(private dialog: MatDialog,
               private store: Store){
       this.loadingRegistrations$ = this.store.select(selectLoadingRegistrations);
       this.error$ = this.store.select(selectRegistrationError).pipe(map((err) => err as Error));
       this.registrations$ = this.store.select(selectRegistrationsList);
+      this.authUser$ = this.store.select(selectAuthUser);
     }
     
     ngOnInit(): void {

@@ -12,6 +12,9 @@ import { Observable, forkJoin, map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StudentActions } from '../../store/student.actions';
 import { selectLoadingStudentModal, selectLoadingStudents, selectPersonasList, selectStudentError } from '../../store/student.selectors';
+import { IRegistration } from '../../../registrations/models';
+import { selectRegistrationsList } from '../../../registrations/store/registration.selectors';
+import { RegistrationActions } from '../../../registrations/store/registration.actions';
 
 @Component({
   selector: 'app-student-dialog',
@@ -20,6 +23,7 @@ import { selectLoadingStudentModal, selectLoadingStudents, selectPersonasList, s
   providers: [provideNativeDateAdapter()],
 })
 export class StudentDialogComponent implements OnInit {
+  displayedRegistrationColumns: string[] = ['id', 'turn', 'subject', 'course', 'actions'];
 
   studentForm = new FormGroup<IStudentForm>({
     personaId: new FormControl(''),
@@ -28,25 +32,31 @@ export class StudentDialogComponent implements OnInit {
 
   buttonDisabled = false;
   loadingStudentModal$: Observable<boolean>;
+  registrations$: Observable<IRegistration[]>
 
   personas$:  Observable<IPerson[]>;
 
   error$: Observable<unknown>;
+
+  loadGridRegistrations = false;
 
   constructor(private matDialogRef: MatDialogRef<StudentDialogComponent>,
               private store: Store,
               @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean]){
 
     this.personas$ = this.store.select(selectPersonasList);
+    this.registrations$ = this.store.select(selectRegistrationsList);
     this.loadingStudentModal$ = this.store.select(selectLoadingStudentModal);
     this.error$ = this.store.select(selectStudentError).pipe(map((err) => err as Error));
 
     if(editingStudent){
-      this.studentForm.patchValue(editingStudent[0]);
+      if(editingStudent[0] !== undefined){
+        this.studentForm.patchValue(editingStudent[0]);
 
-      if(editingStudent[1]){
-        this.studentForm.disable();
-        this.buttonDisabled = true;
+        if(editingStudent[1]){
+          this.studentForm.disable();
+          this.buttonDisabled = true;
+        }
       }
     }
   }
@@ -54,6 +64,12 @@ export class StudentDialogComponent implements OnInit {
     this.store.dispatch(StudentActions.loadPersonas());
 
     this.store.select(selectPersonasList);
+  }
+
+  loadRegistrations(studentId: string):void{
+    this.store.dispatch(RegistrationActions.loadRegistrationsByStudentId({studentId: studentId}));
+
+    this.store.select(selectRegistrationsList);
   }
 
   onSave():void{
@@ -68,5 +84,22 @@ export class StudentDialogComponent implements OnInit {
     else{
       this.matDialogRef.close(this.studentForm.value)
     }
+  }
+
+  onDeleteRegistration(id:string):void{
+    Swal.fire({
+      title: "¿Está usted seguro que desea eliminar la inscripción?.",
+      text: "La inscripción se eliminará de forma permanente.",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar."
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.store.dispatch(RegistrationActions.deleteRegistrationsById({ id: id }));
+
+        this.loadRegistrations(id);
+      }
+    })
   }
 }

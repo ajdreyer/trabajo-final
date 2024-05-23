@@ -90,7 +90,7 @@ export const reducer = createReducer(
   }),
   on(RegistrationActions.deleteRegistrationsById, (state) => ({
     ...state,
-    isLoading: true,
+    loadingRegistrations: true,
   })),
   on(RegistrationActions.deleteRegistrationsByIdSuccess, (state, action) => ({
     ...state,
@@ -141,6 +141,27 @@ export const reducer = createReducer(
       error: action.error,
       loadingRegistrationModal: false
     }
+  }),
+  on(RegistrationActions.loadRegistrationsByStudentId, (state) => {
+    return {
+      ...state,
+      loadingRegistrations: true,
+    };
+  }),
+
+  on(RegistrationActions.loadRegistrationsByStudentIdSuccess, (state, action) => {
+    return {
+      ...state,
+      loadingRegistrations: false,
+      registrations: action.data,
+    };
+  }),
+  on(RegistrationActions.loadRegistrationsByStudentIdFailure, (state, action) => {
+    return {
+      ...state,
+      loadingRegistrations: false,
+      error: action.error,
+    };
   })
 );
 

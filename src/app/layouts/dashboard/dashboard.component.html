@@ -2,13 +2,16 @@
     <!--sidevar-->
     <mat-drawer [opened]="!isMobile()" #drawer class="example-sidenav" [mode]="isMobile() ? 'over' : 'side'">
       <mat-nav-list>
-        <a routerLink="home" mat-list-item>Inicio</a>
-        <a routerLink="registrations" mat-list-item>Inscripciones</a>
-        <a routerLink="students" mat-list-item>Estudiantes</a>
-        <a routerLink="courses" mat-list-item>Cursos</a>
-        <a routerLink="people" mat-list-item>Personas</a>
-        <a *ngIf="(authUser$ | async)?.role?.name === 'admin'" routerLink="users" mat-list-item>Usuarios</a>
-        <a (click)="logout()" mat-list-item>Cerrar sesion</a>
+        <a routerLink="registrations" mat-list-item><mat-icon>receipt_long</mat-icon> Inscripciones</a>
+        <a routerLink="students" mat-list-item><mat-icon>school</mat-icon> Estudiantes</a>
+        <a routerLink="courses" mat-list-item><mat-icon>bookmark_add</mat-icon> Cursos</a>
+        <a routerLink="people" mat-list-item><mat-icon>person</mat-icon> Personas</a>
+        @if (authUser$ | async; as user) {
+          @if (user[0].role.name == 'admin') {
+            <a routerLink="users" mat-list-item><mat-icon>manage_accounts</mat-icon> Usuarios</a>
+          }
+        }
+        <a (click)="logout()" mat-list-item><mat-icon>logout</mat-icon> Cerrar sesion</a>
       </mat-nav-list>
     </mat-drawer>
   
@@ -19,10 +22,11 @@
           <button (click)="drawer.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
             <mat-icon>menu</mat-icon>
           </button>
+          <span>Inscripciones Online - {{ (routeData$ | async)?.["title"] }}</span>
          </div>
          <div>
           @if(authUser$ | async; as user){
-            <!-- {{user?.firstName}} {{user?.lastName}} -->
+            {{user[0].persona.firstName}} {{user[0].persona.lastName}}
           }          
          </div>
         </div>

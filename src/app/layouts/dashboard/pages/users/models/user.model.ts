@@ -3,7 +3,7 @@ import { IPerson } from "../../people/models";
 export type UserRole = 'ADMIN' | 'USER'
 
 export interface IUser{
-    id:number,
+    id:string,
     personaId:string
     persona: IPerson,
     roleId: string,

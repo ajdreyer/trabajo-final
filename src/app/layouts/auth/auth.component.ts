@@ -33,7 +33,7 @@ export class AuthComponent {
     if(this.loginForm.valid){
       this.store.dispatch(AuthActions.loginAuths({ payload: this.loginForm.value}))
 
-      this.router.navigate(['dashboard', 'home']);
+      this.router.navigate(['dashboard', 'registrations']);
       this.loginForm.reset();
     }
     else{

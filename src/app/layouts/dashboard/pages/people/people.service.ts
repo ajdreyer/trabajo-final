@@ -18,18 +18,18 @@ export class PeopleService {
   };
 
   addPeople(person: IPersonPayload): Observable<IPerson>{
-    return this.httpClient.post<IPerson>(`${environment.baseUrl}people`, person)
+    return this.httpClient.post<IPerson>(`${environment.baseUrl}personas`, person)
   };
 
   deletePeople(id:string){
-    return this.httpClient.delete<IPerson>(`${environment.baseUrl}people/${id}`);
+    return this.httpClient.delete<IPerson>(`${environment.baseUrl}personas/${id}`);
   }
 
   getNextId():Observable<number>{
-    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}people`).pipe(count());
+    return this.httpClient.get<IPerson[]>(`${environment.baseUrl}personas`).pipe(count());
   }
 
   updatePeople(id:string, person: IPersonPayload): Observable<IPerson>{
-    return this.httpClient.patch<IPerson>(`${environment.baseUrl}people/${id}`, person);
+    return this.httpClient.patch<IPerson>(`${environment.baseUrl}personas/${id}`, person);
   }
 }

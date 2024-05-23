@@ -13,7 +13,7 @@ export class UsersService{
   }
   
   getUsers(): Observable<IUser[]>{
-    return this.httpClient.get<IUser[]>(`${environment.baseUrl}users`);
+    return this.httpClient.get<IUser[]>(`${environment.baseUrl}users?_embed=persona&_embed=role`);
   }
 
   getUserById(id: string): Observable<IUser | undefined>{

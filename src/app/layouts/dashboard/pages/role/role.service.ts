@@ -14,6 +14,6 @@ export class RoleServie{
     }
 
     getRole(): Observable<IRol[]>{
-        return this.httpClient.get<IRol[]>(`${environment.baseUrl}role`);
+        return this.httpClient.get<IRol[]>(`${environment.baseUrl}roles`);
     }
 }

@@ -8,6 +8,8 @@ import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 import { selectCourseError, selectCoursesList, selectLoadingCourses } from './store/course.selectors';
 import { CourseActions } from './store/course.actions';
+import { selectAuthUser } from '../../../auth/store/auth.selectors';
+import { IUser } from '../users/models';
 
 @Component({
   selector: 'app-courses',
@@ -24,12 +26,15 @@ export class CoursesComponent implements OnInit {
 
   error$: Observable<unknown>;
 
+  authUser$: Observable<IUser[] | null>
+
   constructor(private courseService: CourseService,
               private dialog: MatDialog,
               private store: Store){
       this.loadingcourses$ = this.store.select(selectLoadingCourses);
       this.error$ = this.store.select(selectCourseError).pipe(map((err) => err as Error));
       this.courses$ = this.store.select(selectCoursesList);
+      this.authUser$ = this.store.select(selectAuthUser);
               }
 
   ngOnInit(): void {

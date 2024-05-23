@@ -11,6 +11,10 @@ export const RegistrationActions = createActionGroup({
     'Load Registrations Success': props<{ data: IRegistration[] }>(),
     'Load Registrations Failure': props<{ error: unknown }>(),
 
+    'Load RegistrationsByStudentId': props<{ studentId: string }>(),
+    'Load RegistrationsByStudentId Success': props<{ data: IRegistration[] }>(),
+    'Load RegistrationsByStudentId Failure': props<{ error: unknown }>(),
+
     'Create Registrations': props<{ payload: IRegistrationPayload }>(),
     'Create Registrations Success': props<{ data: IRegistration }>(),
     'Create Registrations Failure': props<{ error: unknown }>(),

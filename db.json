@@ -20,7 +20,7 @@
       "id": "1",
       "firstName": "Alejandro",
       "lastName": "Dreyer",
-      "email": "alejandro.dreyer91@gmail.com",
+      "email": "aledre@gmail.com",
       "bornDate": "1988-05-15T03:00:00.000Z",
       "idNumber": "28456123",
       "schoolLevel": "Secondary",
@@ -43,6 +43,20 @@
       "floor": "2",
       "department": "B",
       "createdAt": "2024-05-06T21:07:47.029Z"
+    },
+    {
+      "id": "7a33",
+      "firstName": "Rogelio",
+      "lastName": "Federer",
+      "email": "rf@gmail.com",
+      "bornDate": "2024-05-22T03:00:00.000Z",
+      "idNumber": "12333",
+      "schoolLevel": "Primary",
+      "streetName": "calle123",
+      "streetNumber": "123",
+      "floor": "",
+      "department": "",
+      "createdAt": "2024-05-23T00:36:20.555Z"
     }
   ],
   "students": [
@@ -59,11 +73,11 @@
   ],
   "registrations": [
     {
-      "id": "c6a0",
+      "id": "49ee",
       "turn": "Mañana",
-      "subject": "ingles",
-      "hourFrom": "16:00",
-      "hourTo": "19:00",
+      "subject": "Ingles",
+      "hourFrom": "08:00",
+      "hourTo": "12:00",
       "courseId": "1",
       "studentId": "1"
     }

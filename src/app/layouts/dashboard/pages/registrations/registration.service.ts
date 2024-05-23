@@ -15,6 +15,10 @@ import { environment } from '../../../../../environments/environment';
         return this.httpClient.get<IRegistration[]>(`${environment.baseUrl}registrations?_embed=course&_embed=student`)
     }
 
+    getRegistrationsByStudentId(studentId: string): Observable<IRegistration[]>{
+        return this.httpClient.get<IRegistration[]>(`${environment.baseUrl}registrations?_embed=course&_embed=student&student.id=1`)
+    }
+
     createRegistration(registration: IRegistrationPayload){
         return this.httpClient.post<IRegistration>(`${environment.baseUrl}registrations`, registration);
     }

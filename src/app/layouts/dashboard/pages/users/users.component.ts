@@ -4,6 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import Swal from 'sweetalert2';
 import { UsersService } from './users.service';
+import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs';
+import { selectLoadingUsers, selectUsersError, selectUsersList } from './store/user.selectors';
+import { selectAuthUser } from '../../../auth/store/auth.selectors';
+import { UserActions } from './store/user.actions';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -13,31 +18,31 @@ import { UsersService } from './users.service';
 export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullName', 'email', 'role', 'name', 'actions'];
 
-  users: IUser[] = [];
+  users$: Observable<IUser[]>;
 
-  loading = false;
+  loading$:Observable<boolean>;
 
-  constructor( private dialog: MatDialog, private userService: UsersService){
+  authUser$: Observable<IUser[] | null>
+
+  error$: Observable<unknown>;
+
+  constructor(private dialog: MatDialog, 
+              private userService: UsersService,
+              private store: Store){
+    this.loading$ = this.store.select(selectLoadingUsers);
+    this.error$ = this.store.select(selectUsersError).pipe(map((err) => err as Error));
+    this.users$ = this.store.select(selectUsersList);
+    this.authUser$ = this.store.select(selectAuthUser);
   }
   
   ngOnInit(): void {
-    this.loading = true;
+    this.loadUsers();
+  }
 
-    this.userService.getUsers().subscribe({
-      next: (users) => {
-        this.users = users;
-      },
-      error: (err) => {
-        console.log('error:', err);
-        Swal.fire({
-          title: err,
-          icon: "error"
-        });
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    })
+  loadUsers():void{
+    this.store.dispatch(UserActions.loadUsers());
+
+    this.store.select(selectUsersList);
   }
 
   opentDialog(editingUser?: IUser):void{
@@ -50,15 +55,7 @@ export class UsersComponent implements OnInit {
         next:(result) => {
           if(result){
             if(editingUser){
-              this.userService.updateUser(editingUser.id.toString(), result).subscribe({
-                next: () => {
-                  this.userService.getUsers().subscribe({
-                    next:(users) => {
-                      this.users = users;
-                    }
-                  });
-                }
-              });
+              this.store.dispatch(UserActions.updateUsers({ id: editingUser.id, payload: result}))
 
               Swal.fire({
                 title: `El usuario se modificó de manera existosa.`,
@@ -66,24 +63,21 @@ export class UsersComponent implements OnInit {
               });
             }
             else{
-              
-              this.userService.createUser(result).subscribe({
-                next: (createdUser) => {
-                  this.users = [...this.users, createdUser];
-                }
-              });
+              this.store.dispatch(UserActions.createUsers({payload: result}))
 
                Swal.fire({
                 title: "Usuario creado de manera exitosa.",
                 icon: "success"
               });
             }
+
+            this.loadUsers();
           }
         },
       });
   }
 
-  onDeleteUser(id:number):void{
+  onDeleteUser(id:string):void{
     Swal.fire({
       title: "¿Está usted seguro que desea eliminar el usuario?.",
       text: "El usuario se eliminará de forma permanente.",
@@ -93,14 +87,9 @@ export class UsersComponent implements OnInit {
       confirmButtonText: "Si, eliminar."
     }).then((result) => {
       if(result.isConfirmed){
-        this.userService.deleteUser(id.toString()).subscribe({
-          next: () => 
-            this.userService.getUsers().subscribe({
-              next:(users) => {
-                this.users = users;
-              }
-            })
-        });
+        this.store.dispatch(UserActions.deleteUsersById({ id: id }));
+
+        this.loadUsers();
       }
     })
   }

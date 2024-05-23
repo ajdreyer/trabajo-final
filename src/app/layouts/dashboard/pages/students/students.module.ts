@@ -9,6 +9,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StudentEffects } from './store/student.effects';
 import { StoreModule } from '@ngrx/store';
 import { studentFeature } from './store/student.reducer';
+import { registrationFeature } from '../registrations/store/registration.reducer';
+import { RegistrationEffects } from '../registrations/store/registration.effects';
 
 
 @NgModule({
@@ -20,8 +22,9 @@ import { studentFeature } from './store/student.reducer';
     CommonModule,
     StudentsRoutingModule,
     SharedModule,
+    StoreModule.forFeature(registrationFeature),
     StoreModule.forFeature(studentFeature),
-    EffectsModule.forFeature([StudentEffects])
+    EffectsModule.forFeature([StudentEffects, RegistrationEffects])
   ],
   exports:[
     StudentsComponent

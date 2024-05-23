@@ -3,9 +3,8 @@ import { IPerson } from "../../people/models";
 import { IRol } from "./user.model";
 
 export interface IUserForm{
-    id: FormControl<number | null>,
-    person: FormControl<IPerson | null>,
-    rol: FormControl<IRol | null>,
+    personaId: FormControl<string | null>,
+    roleId: FormControl<string | null>,
     name: FormControl<string | null>,
     password: FormControl<string | null>
 }

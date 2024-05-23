@@ -1,4 +1,12 @@
-<h2 mat-dialog-title >Crear Usuario</h2>
+@if (loadingUserModal$ | async) {
+    <div class="d-flex justify-content-center align-items-center w-100">
+        <mat-spinner ></mat-spinner>
+    </div>
+}@else{
+    @if (error$ | async ){
+        <h3>Ocurrió un error al cargar el modal de usuarios.</h3>
+    }@else {
+        <h2 mat-dialog-title >Crear Usuario</h2>
 
 <form [formGroup]="userForm">
     <div mat-dialog-content>
@@ -6,8 +14,8 @@
             <div class="col-6">
                 <mat-form-field class="w-100 p-2">
                     <mat-label>Persona</mat-label>
-                        <mat-select formControlName="person">
-                            <mat-option [value]="person" *ngFor="let person of people">
+                        <mat-select formControlName="personaId">
+                            <mat-option [value]="person.id" *ngFor="let person of (personas$ | async)">
                                 {{ person.firstName}} {{person.lastName }}
                             </mat-option>
                         </mat-select>   
@@ -16,8 +24,8 @@
             <div class="col-6">
                 <mat-form-field class="w-100 p-2">
                     <mat-label>Rol</mat-label>
-                    <mat-select formControlName="rol">
-                    <mat-option [value]="rol" *ngFor="let rol of role">
+                    <mat-select formControlName="roleId">
+                    <mat-option [value]="rol.id" *ngFor="let rol of (role$ | async)">
                         {{ rol.name}}
                     </mat-option>
                     </mat-select>
@@ -42,3 +50,5 @@
     <button (click)="onSave()" mat-button>Guardar</button>
     <button mat-dialog-close mat-button>Cancelar</button>
 </div>
+    }
+}

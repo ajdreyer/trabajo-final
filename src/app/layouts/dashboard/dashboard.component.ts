@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { IUser } from './pages/users/models';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectAuthUser } from '../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,22 +14,23 @@ import { Router } from '@angular/router';
 export class DashboardComponent {
   showFiller = false;
 
-  mostrarComponente = true;
-
-  showStudents = false;
-  showClasses = false;
-  showCourses = false;
-
   isMobile(): boolean {
     return window.innerWidth <= 280;
   }
 
-  authUser$: Observable<IUser | null>;
-
+  authUser$: Observable<IUser[] | null>;
+  routeData$: Observable<Data | undefined>;
+  
   constructor(private authService: AuthService,
-              private router: Router
+              private router: Router,
+              private store: Store,
+              private route: ActivatedRoute
   ){
-    this.authUser$ = this.authService.authUser$;
+    this.authUser$ = this.store.select(selectAuthUser);
+    this.routeData$ = router.events.pipe(
+      filter((ev) => ev instanceof NavigationEnd),
+      map(() => route.firstChild?.snapshot.data)
+    );
   }
 
   logout(): void{

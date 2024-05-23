@@ -6,44 +6,51 @@ const routes: Routes = [
    /**
    * Path actual: /darshboard
    */
-   {
-    path: 'home',
-    data: {
-      title: 'Inicio',
-    },
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomeModule),
-  },
   {
     path: 'users',
+    data: {
+      title: 'Usuarios',
+    },
     canActivate:[adminGuard],
     loadChildren: () =>
       import('./pages/users/users.module').then((m) => m.UsersModule),
   },
   {
     path: 'students',
+    data: {
+      title: 'Estudiantes',
+    },
     loadChildren: () =>
       import('./pages/students/students.module').then((m) => m.StudentsModule),
   },
   {
     path: 'courses',
+    data: {
+      title: 'Cursos',
+    },
     loadChildren: () =>
       import('./pages/courses/courses.module').then((m) => m.CoursesModule),
   },  
   {
     path: 'people',
+    data: {
+      title: 'Personas',
+    },
     loadChildren: () =>
       import('./pages/people/people.module').then((m) => m.PeopleModule),
   },
   {
     path: 'registrations',
+    data: {
+      title: 'Inscripciones',
+    },
     loadChildren: () =>
       import('./pages/registrations/registrations.module').then((m) => m.RegistrationsModule),
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home',
+    redirectTo: 'registrations',
   },
 ];
 

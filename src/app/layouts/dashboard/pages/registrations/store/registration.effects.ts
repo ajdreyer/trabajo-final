@@ -89,6 +89,20 @@ export class RegistrationEffects {
     );
   });
 
+  loadRegistrationsByStudentId$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(RegistrationActions.loadRegistrationsByStudentId),
+      concatMap((action) =>
+        this.registrationService.getRegistrationsByStudentId(action.studentId).pipe(
+          map((data) => RegistrationActions.loadRegistrationsByStudentIdSuccess({ data })),
+          catchError((error) =>
+            of(RegistrationActions.loadRegistrationsByStudentIdFailure({ error }))
+          )
+        )
+      )
+    );
+  });
+
   constructor(private actions$: Actions,
               private registrationService: RegistrationService,
               private courseService: CourseService,

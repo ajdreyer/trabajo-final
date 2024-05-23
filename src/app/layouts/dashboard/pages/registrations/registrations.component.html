@@ -42,12 +42,16 @@
                   <button (click)="opentDialog(element, true)" mat-icon-button color="primary">
                     <mat-icon>visibility</mat-icon>
                   </button>
-                  <button (click)="opentDialog(element)" mat-icon-button color="primary">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button (click)="onDeleteRegistration(element.id)" mat-icon-button color="warn">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+                  @if (authUser$ | async; as user) {
+                    @if (user[0].role.name == 'admin') {
+                      <button (click)="opentDialog(element)" mat-icon-button color="primary">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button (click)="onDeleteRegistration(element.id)" mat-icon-button color="warn">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    }
+                  }
                 </td>
               </ng-container>
             
