@@ -44,7 +44,6 @@ export class StudentDialogComponent implements OnInit, AfterViewInit, OnDestroy 
 
   constructor(private matDialogRef: MatDialogRef<StudentDialogComponent>,
               private store: Store,
-              private registrationService: RegistrationService,
               @Inject(MAT_DIALOG_DATA) private editingStudent?: [IStudent, boolean]){
 
     this.personas$ = this.store.select(selectPersonasList);
@@ -56,11 +55,9 @@ export class StudentDialogComponent implements OnInit, AfterViewInit, OnDestroy 
       if(editingStudent[0] !== undefined){
         this.studentForm.patchValue(editingStudent[0]);
 
-        this.studentId = editingStudent[0].id;
-
         if(editingStudent[1]){
           this.studentForm.disable();
-          this.buttonDisabled = true;
+          this.studentId = editingStudent[0].id;
         }
       }
     }
